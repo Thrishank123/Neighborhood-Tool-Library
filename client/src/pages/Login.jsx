@@ -2,54 +2,137 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axiosConfig";
 import { useAuth } from "../context/AuthContext";
+import FormInput from "../components/FormInput";
+import Button from "../components/Button";
+import Card from "../components/Card";
+import Container from "../components/Container";
+import Spinner from "../components/Spinner";
+import { ToastContainer } from "../components/Toast";
 
 const Login = () => {
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [toasts, setToasts] = useState([]);
   const navigate = useNavigate();
+
+  const addToast = (message, type = "success") => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message, type }]);
+  };
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.email) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid";
+    if (!formData.password) newErrors.password = "Password is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
+    setIsLoading(true);
     try {
-      const res = await api.post("/auth/login", { email, password });
+      const res = await api.post("/auth/login", formData);
       login(res.data.user, res.data.token);
-      navigate("/tools");
+      addToast("Login successful!");
+      setTimeout(() => navigate("/tools"), 1000);
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      const message = err.response?.data?.message || "Login failed";
+      addToast(message, "error");
+      setErrors({ general: message });
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
-      <div className="bg-white shadow-md p-8 rounded-lg w-[90%] max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-4 text-primary">Login</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <input
-            className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button className="w-full bg-primary text-white p-2 rounded hover:bg-blue-700 transition">
-            Login
-          </button>
-        </form>
-        <p className="text-center text-sm mt-3">
-          Don’t have an account?{" "}
-          <span onClick={() => navigate("/register")} className="text-primary cursor-pointer hover:underline">
-            Register
-          </span>
-        </p>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5 py-12 px-4 sm:px-6 lg:px-8">
+      <Container className="max-w-md w-full">
+        <Card>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-neutral-900 mb-2">Welcome Back</h1>
+            <p className="text-neutral-600">Sign in to your account</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            <FormInput
+              label="Email Address"
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              error={errors.email}
+              placeholder="Enter your email"
+              required
+              autoComplete="email"
+            />
+
+            <FormInput
+              label="Password"
+              type="password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+              error={errors.password}
+              placeholder="Enter your password"
+              required
+              autoComplete="current-password"
+            />
+
+            {errors.general && (
+              <div className="text-red-600 text-sm text-center" role="alert">
+                {errors.general}
+              </div>
+            )}
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Spinner size="sm" className="mr-2" />
+                  Signing in...
+                </>
+              ) : (
+                "Sign In"
+              )}
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-neutral-600">
+              Don't have an account?{" "}
+              <button
+                onClick={() => navigate("/register")}
+                className="text-primary hover:text-primary/80 font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+              >
+                Sign up
+              </button>
+            </p>
+          </div>
+        </Card>
+
+        <ToastContainer toasts={toasts} removeToast={removeToast} />
+      </Container>
     </div>
   );
 };

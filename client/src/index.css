@@ -2,11 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Typography and layout improvements */
-body {
-  @apply bg-gray-50 text-gray-800 antialiased;
+/* Base styles */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-neutral-50 text-neutral-800 antialiased font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-neutral-900;
+  }
+  p {
+    @apply text-neutral-700;
+  }
+  a {
+    @apply text-primary hover:text-primary/80 transition-colors;
+  }
 }
 
-button {
-  @apply px-4 py-2 rounded-md bg-primary text-white hover:bg-blue-700 transition;
+/* Component styles */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary/90 shadow-sm;
+  }
+  .btn-secondary {
+    @apply bg-neutral-200 text-neutral-800 hover:bg-neutral-300;
+  }
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700;
+  }
+  .input {
+    @apply w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors;
+  }
+  .label {
+    @apply block text-sm font-medium text-neutral-700 mb-1;
+  }
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-neutral-200 p-6;
+  }
+  .table {
+    @apply w-full text-sm text-left;
+  }
+  .table th {
+    @apply px-4 py-3 bg-neutral-50 font-medium text-neutral-900 border-b border-neutral-200;
+  }
+  .table td {
+    @apply px-4 py-3 border-b border-neutral-100;
+  }
+}
+
+/* Utility styles */
+@layer utilities {
+  .container-max {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
 }
