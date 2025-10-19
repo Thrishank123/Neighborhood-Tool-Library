@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, Filter } from "lucide-react";
 import api from "../api/axiosConfig";
 import ToolCard from "../components/ToolCard";
@@ -7,6 +8,7 @@ import Spinner from "../components/Spinner";
 import { ToastContainer } from "../components/Toast";
 
 const Tools = () => {
+  const navigate = useNavigate();
   const [tools, setTools] = useState([]);
   const [filteredTools, setFilteredTools] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -67,113 +69,118 @@ const Tools = () => {
         end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 7 days from now
       });
       addToast("Reservation request submitted successfully!");
+      navigate(`/reservations?tool_id=${toolId}`);
     } catch (err) {
       const message = err.response?.data?.message || "Failed to reserve tool";
       addToast(message, "error");
     }
   };
-
+  
   const categories = [...new Set(tools.map(tool => tool.category))];
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-20">
-        <Container className="py-12">
-          <div className="text-center">
-            <Spinner size="lg" className="mx-auto mb-4" />
-            <p className="text-neutral-600">Loading tools...</p>
+      <div className="min-h-screen bg-[url('https://images.squarespace-cdn.com/content/v1/5263da08e4b0b68d00ba1ec4/1656095998584-U12F2E84U3047NPEB5PW/IMG_0193+(1).jpg')] bg-cover bg-center bg-no-repeat pt-24">
+        <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
+            <div className="text-center">
+              <Spinner size="lg" className="mx-auto mb-4" />
+              <p className="text-white/80">Loading tools...</p>
+            </div>
           </div>
-        </Container>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pt-20">
-      <Container className="py-12">
-        {/* Hero Section */}
-        <div className="mb-12">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-            {/* Title Section */}
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold text-neutral-900 mb-2">
-                Available Tools
-              </h1>
-              <p className="text-lg text-neutral-600 max-w-2xl">
-                Browse, reserve, and manage all available equipment in the inventory.
-              </p>
-            </div>
-
-            {/* Controls Section */}
-            <div className="flex flex-col sm:flex-row gap-4 lg:min-w-0 lg:flex-shrink-0">
-              {/* Search Bar */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 h-5 w-5" />
-                <input
-                  type="text"
-                  placeholder="Search tools..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary w-full sm:w-64"
-                />
+    <div className="min-h-screen bg-[url('https://images.squarespace-cdn.com/content/v1/5263da08e4b0b68d00ba1ec4/1656095998584-U12F2E84U3047NPEB5PW/IMG_0193+(1).jpg')] bg-cover bg-center bg-no-repeat pt-24">
+      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
+          {/* Hero Section */}
+          <div className="mb-12">
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+              {/* Title Section */}
+              <div className="flex-1">
+                <h1 className="text-21xl font-bold text-gray-900 mb-2">
+                  Available Tools
+                </h1>
+                <p className="text-17xl text-gray-800 max-w-2xl">
+                  Browse, reserve, and manage all available equipment in the inventory.
+                </p>
               </div>
 
-              {/* Filter Dropdown */}
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
-              >
-                <option value="">Filter by Category</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
+              {/* Controls Section */}
+              <div className="flex flex-col sm:flex-row gap-4 lg:min-w-0 lg:flex-shrink-0">
+                {/* Search Bar */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 h-5 w-5" />
+                  <input
+                    type="text"
+                    placeholder="Search tools..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 pr-4 py-3 bg-white/25 border border-white/30 text-gray-900 placeholder-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30 w-full sm:w-64"
+                  />
+                </div>
 
-              {/* Sort Dropdown */}
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
-              >
-                <option value="">Sort by...</option>
-                <option value="name">Name</option>
-                <option value="category">Category</option>
-              </select>
+                {/* Filter Dropdown */}
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="px-4 py-3 bg-white/25 border border-white/30 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30"
+                >
+                  <option value="" className="bg-neutral-800">Filter by Category</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category} className="bg-neutral-800">{category}</option>
+                  ))}
+                </select>
+
+                {/* Sort Dropdown */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="px-4 py-3 bg-white/25 border border-white/30 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30"
+                >
+                  <option value="" className="bg-neutral-800">Sort by...</option>
+                  <option value="name" className="bg-neutral-800">Name</option>
+                  <option value="category" className="bg-neutral-800">Category</option>
+                </select>
+              </div>
             </div>
           </div>
+
+          {/* Tools Grid */}
+          {error ? (
+            <div className="text-center py-12">
+              <p className="text-red-300 mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : filteredTools.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-white/80 text-lg">No tools available yet.</p>
+              <p className="text-white/60 mt-2">Check back later for new additions to the library.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {filteredTools.map((tool) => (
+                <ToolCard
+                  key={tool.id}
+                  tool={tool}
+                  onReserve={() => handleReserve(tool.id)}
+                />
+              ))}
+            </div>
+          )}
+
+          <ToastContainer toasts={toasts} removeToast={removeToast} />
         </div>
-
-        {/* Tools Grid */}
-        {error ? (
-          <div className="text-center py-12">
-            <p className="text-red-600 mb-4">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="btn btn-primary"
-            >
-              Try Again
-            </button>
-          </div>
-        ) : filteredTools.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-neutral-500 text-lg">No tools available yet.</p>
-            <p className="text-neutral-400 mt-2">Check back later for new additions to the library.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredTools.map((tool) => (
-              <ToolCard
-                key={tool.id}
-                tool={tool}
-                onReserve={() => handleReserve(tool.id)}
-              />
-            ))}
-          </div>
-        )}
-
-        <ToastContainer toasts={toasts} removeToast={removeToast} />
-      </Container>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-// server/controllers/reservationController.js
 import { pool } from "../config/db.js";
 
 export const createReservation = async (req, res) => {
@@ -40,7 +39,7 @@ export const createReservation = async (req, res) => {
 
     const insert = await pool.query(
       `INSERT INTO reservations (tool_id, user_id, start_date, end_date, status)
-       VALUES ($1,$2,$3,$4,'pending') RETURNING id, tool_id, user_id, start_date, end_date, status, created_at`,
+       VALUES ($1,$2,$3,$4,'pending') RETURNING *`,
       [tool_id, user_id, start_date, end_date]
     );
 
@@ -71,55 +70,68 @@ export const getUserReservations = async (req, res) => {
 
 // Admin: approve/reject reservation requests
 export const updateReservationStatus = async (req, res) => {
-  try {
-    const id = Number(req.params.id);
-    const { status } = req.body;
-    const admin_id = req.user.id;
+  const { status } = req.body;
+  // Use a transaction only when approving, as other statuses are simple updates
+  if (status === 'approved') {
+    const client = await pool.connect();
+    try {
+      const id = Number(req.params.id);
+      const admin_id = req.user.id;
+      
+      await client.query('BEGIN');
 
-    if (!["approved","rejected","active","closed"].includes(status)) return res.status(400).json({ message: "Invalid status" });
-
-    // If approving a reservation, reject all other pending reservations for the same tool and dates
-    if (status === 'approved') {
-      // Get the reservation details first
-      const reservation = await pool.query(
+      const reservationResult = await client.query(
         "SELECT tool_id, start_date, end_date FROM reservations WHERE id = $1",
         [id]
       );
-      if (!reservation.rows.length) return res.status(404).json({ message: "Reservation not found" });
+      if (!reservationResult.rows.length) {
+        await client.query('ROLLBACK');
+        return res.status(404).json({ message: "Reservation not found" });
+      }
 
-      const { tool_id, start_date, end_date } = reservation.rows[0];
+      const { tool_id, start_date, end_date } = reservationResult.rows[0];
 
-      // Reject all other pending reservations for this tool during the same period
-      await pool.query(
-        `UPDATE reservations
-         SET status = 'rejected'
-         WHERE tool_id = $1
-           AND status = 'pending'
-           AND id != $2
+      // Reject overlapping pending reservations
+      await client.query(
+        `UPDATE reservations SET status = 'rejected'
+         WHERE tool_id = $1 AND status = 'pending' AND id != $2
            AND NOT (end_date < $3 OR start_date > $4)`,
         [tool_id, id, start_date, end_date]
       );
 
-      // Update the approved reservation
-      const result = await pool.query(
-        "UPDATE reservations SET status=$1, approved_at=CURRENT_TIMESTAMP, approved_by=$2 WHERE id=$3 RETURNING id, tool_id, user_id, start_date, end_date, status, approved_at",
+      // Approve the target reservation
+      const result = await client.query(
+        "UPDATE reservations SET status=$1, approved_at=CURRENT_TIMESTAMP, approved_by=$2 WHERE id=$3 RETURNING *",
         [status, admin_id, id]
       );
-      return res.json(result.rows[0]);
-    }
 
-    // For other status updates
+      await client.query('COMMIT');
+      return res.json(result.rows[0]);
+
+    } catch (err) {
+      await client.query('ROLLBACK');
+      console.error("updateReservationStatus (approve)", err);
+      return res.status(500).json({ message: "Server error" });
+    } finally {
+      client.release();
+    }
+  }
+
+  // For other simple status updates, no transaction is needed
+  try {
+    const id = Number(req.params.id);
     const result = await pool.query(
-      "UPDATE reservations SET status=$1 WHERE id=$2 RETURNING id, tool_id, user_id, start_date, end_date, status",
+      "UPDATE reservations SET status=$1 WHERE id=$2 RETURNING *",
       [status, id]
     );
     if (!result.rows.length) return res.status(404).json({ message: "Reservation not found" });
     res.json(result.rows[0]);
   } catch (err) {
-    console.error("updateReservationStatus", err);
+    console.error("updateReservationStatus (other)", err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Admin: get all pending reservation requests
 export const getPendingReservations = async (req, res) => {
@@ -137,5 +149,48 @@ export const getPendingReservations = async (req, res) => {
   } catch (err) {
     console.error("getPendingReservations", err);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// User: return a tool (close active reservation)
+// User: return or cancel a reservation
+export const returnReservation = async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const id = Number(req.params.id);
+    const user_id = req.user.id;
+
+    // Check if the reservation exists and belongs to the user
+    const reservation = await client.query(
+      "SELECT status FROM reservations WHERE id = $1 AND user_id = $2",
+      [id, user_id]
+    );
+    if (!reservation.rows.length) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ message: "Reservation not found" });
+    }
+
+    // UPDATED LOGIC: Allow action on 'approved' or 'active' reservations
+    const currentStatus = reservation.rows[0].status;
+    if (!['approved', 'active'].includes(currentStatus)) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ message: "Only approved or active reservations can be actioned" });
+    }
+
+    // Update reservation status to 'closed'
+    const result = await client.query(
+      "UPDATE reservations SET status='closed' WHERE id=$1 RETURNING *",
+      [id]
+    );
+
+    await client.query('COMMIT');
+    res.json(result.rows[0]);
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error("returnReservation", err);
+    res.status(500).json({ message: "Server error" });
+  } finally {
+    client.release();
   }
 };

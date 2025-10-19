@@ -23,9 +23,9 @@ const ToolCard = ({ tool, onReserve }) => {
   };
 
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden">
+    <Card className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden relative">
       <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-neutral-100">
-        <img
+          <img  
           src={img}
           alt={`Image of ${tool.name}`}
           className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
@@ -63,6 +63,16 @@ const ToolCard = ({ tool, onReserve }) => {
         >
           Reserve
         </Button>
+      </div>
+
+      {/* Hover overlay with "View" button */}
+      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
+        <button
+          onClick={onReserve}
+          className="bg-white text-neutral-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+        >
+          View Details
+        </button>
       </div>
     </Card>
   );

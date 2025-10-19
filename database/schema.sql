@@ -24,7 +24,7 @@ CREATE TABLE reservations (
   user_id INT REFERENCES users(id) ON DELETE CASCADE,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
-  status VARCHAR(15) CHECK(status IN ('pending','approved','active','closed','rejected')) DEFAULT 'pending',
+  status VARCHAR(15) CHECK(status IN ('approved', 'active', 'pending', 'rejected', 'closed')) DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   approved_at TIMESTAMP,
   approved_by INT REFERENCES users(id)

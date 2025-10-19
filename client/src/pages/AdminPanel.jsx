@@ -100,213 +100,236 @@ const AdminPanel = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-20">
-        <Container className="py-12">
-          <div className="text-center">
-            <Spinner size="lg" className="mx-auto mb-4" />
-            <p className="text-neutral-600">Loading admin panel...</p>
+      <div className="min-h-screen bg-[url('https://images.squarespace-cdn.com/content/v1/5263da08e4b0b68d00ba1ec4/1656095998584-U12F2E84U3047NPEB5PW/IMG_0193+(1).jpg')] bg-cover bg-center bg-no-repeat pt-24">
+        <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
+            <div className="text-center">
+              <Spinner size="lg" className="mx-auto mb-4" />
+              <p className="text-white/80">Loading admin panel...</p>
+            </div>
           </div>
-        </Container>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pt-20">
-      <Container className="py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-neutral-900 mb-2">Admin Panel</h1>
-          <p className="text-neutral-600">Manage tools, reservations, and damage reports</p>
-        </div>
+    <div className="min-h-screen bg-[url('https://images.squarespace-cdn.com/content/v1/5263da08e4b0b68d00ba1ec4/1656095998584-U12F2E84U3047NPEB5PW/IMG_0193+(1).jpg')] bg-cover bg-center bg-no-repeat pt-24">
+      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
+          <div className="mb-8">
+            <h1 className="text-19xl font-bold text-gray-900 mb-2">Admin Panel</h1>
+            <p className="text-16xl text-gray-800">Manage tools, reservations, and damage reports</p>
+          </div>
 
-        <div className="space-y-8">
-          <Card>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              <h2 className="text-xl font-semibold text-neutral-900">Tools Management</h2>
-              <div className="flex gap-2">
-                <Button onClick={() => setShowPendingModal(true)} variant="secondary" className="w-full sm:w-auto">
-                  Pending Reservations ({pendingReservations.length})
-                </Button>
-                <Button onClick={() => addToast("Add tool functionality not implemented", "info")} className="w-full sm:w-auto">
-                  Add New Tool
-                </Button>
+          <div className="space-y-8">
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h2 className="text-xl font-semibold text-white">Tools Management</h2>
+                <div className="flex gap-2">
+                  <button onClick={() => setShowPendingModal(true)} className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors w-full sm:w-auto">
+                    Pending Reservations ({pendingReservations.length})
+                  </button>
+                  <button onClick={() => addToast("Add tool functionality not implemented", "info")} className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full sm:w-auto">
+                    Add New Tool
+                  </button>
+                </div>
+              </div>
+              {tools.length === 0 ? (
+                <p className="text-white/60 text-center py-8">No tools available.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-white">
+                    <thead>
+                      <tr className="border-b border-white/20">
+                        <th className="text-left py-3 px-4">ID</th>
+                        <th className="text-left py-3 px-4">Name</th>
+                        <th className="text-left py-3 px-4">Category</th>
+                        <th className="text-left py-3 px-4">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tools.map((t) => (
+                        <tr key={t.id} className="border-b border-white/10">
+                          <td className="py-3 px-4">{t.id}</td>
+                          <td className="py-3 px-4 font-medium">{t.name}</td>
+                          <td className="py-3 px-4">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-white">
+                               {t.category}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4">
+                            <button
+                              className="bg-red-500/20 text-red-300 px-3 py-1 rounded-lg hover:bg-red-500/30 transition-colors text-sm"
+                              onClick={() => deleteTool(t.id)}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+              <h2 className="text-xl font-semibold text-white mb-6">Reservations Management</h2>
+              {reservations.length === 0 ? (
+                <p className="text-white/60 text-center py-8">No reservations found.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-white">
+                    <thead>
+                      <tr className="border-b border-white/20">
+                        <th className="text-left py-3 px-4">ID</th>
+                        <th className="text-left py-3 px-4">Tool</th>
+                        <th className="text-left py-3 px-4">User</th>
+                        <th className="text-left py-3 px-4">Start Date</th>
+                        <th className="text-left py-3 px-4">End Date</th>
+                        <th className="text-left py-3 px-4">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reservations.map((r) => (
+                        <tr key={r.id} className="border-b border-white/10">
+                          <td className="py-3 px-4">{r.id}</td>
+                          <td className="py-3 px-4 font-medium">{r.tool_name}</td>
+                          <td className="py-3 px-4">{r.user_name || "N/A"}</td>
+                          <td className="py-3 px-4">{new Date(r.start_date).toLocaleDateString()}</td>
+                          <td className="py-3 px-4">{new Date(r.end_date).toLocaleDateString()}</td>
+                          <td className="py-3 px-4">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(r.status)}`}>
+                              {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+              <h2 className="text-xl font-semibold text-white mb-6">Damage Reports</h2>
+              {reports.length === 0 ? (
+                <p className="text-white/60 text-center py-8">No reports found.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-white">
+                    <thead>
+                      <tr className="border-b border-white/20">
+                        <th className="text-left py-3 px-4">ID</th>
+                        <th className="text-left py-3 px-4">Tool</th>
+                        <th className="text-left py-3 px-4">Reporter</th>
+                        <th className="text-left py-3 px-4">Description</th>
+                        <th className="text-left py-3 px-4">Status</th>
+                        <th className="text-left py-3 px-4">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reports.map((r) => (
+                        <tr key={r.id} className="border-b border-white/10">
+                          <td className="py-3 px-4">{r.id}</td>
+                          <td className="py-3 px-4 font-medium">{r.tool_name}</td>
+                          <td className="py-3 px-4">{r.reporter}</td>
+                          <td className="py-3 px-4 max-w-xs truncate" title={r.description}>
+                            {r.description}
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              r.resolved
+                                ? "text-green-300 bg-green-900/50"
+                                : "text-yellow-300 bg-yellow-900/50"
+                            }`}>
+                              {r.resolved ? "Resolved" : "Pending"}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4">
+                            {!r.resolved && (
+                              <button
+                                className="bg-primary text-white px-3 py-1 rounded-lg hover:bg-primary/90 transition-colors text-sm"
+                                onClick={() => resolveReport(r.id)}
+                              >
+                                Resolve
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {showPendingModal && (
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-semibold text-white">Pending Reservations</h3>
+                  <button
+                    onClick={() => setShowPendingModal(false)}
+                    className="text-white/60 hover:text-white"
+                  >
+                    ✕
+                  </button>
+                </div>
+                {pendingReservations.length === 0 ? (
+                  <p className="text-white/60 text-center py-8">No pending reservations.</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-white">
+                      <thead>
+                        <tr className="border-b border-white/20">
+                          <th className="text-left py-3 px-4">ID</th>
+                          <th className="text-left py-3 px-4">Tool</th>
+                          <th className="text-left py-3 px-4">User</th>
+                          <th className="text-left py-3 px-4">Start Date</th>
+                          <th className="text-left py-3 px-4">End Date</th>
+                          <th className="text-left py-3 px-4">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pendingReservations.map((r) => (
+                          <tr key={r.id} className="border-b border-white/10">
+                            <td className="py-3 px-4">{r.id}</td>
+                            <td className="py-3 px-4 font-medium">{r.tool_name}</td>
+                            <td className="py-3 px-4">{r.user_name || "N/A"}</td>
+                            <td className="py-3 px-4">{new Date(r.start_date).toLocaleDateString()}</td>
+                            <td className="py-3 px-4">{new Date(r.end_date).toLocaleDateString()}</td>
+                            <td className="py-3 px-4">
+                              <div className="flex gap-2">
+                                <button
+                                  className="bg-green-500/20 text-green-300 px-3 py-1 rounded-lg hover:bg-green-500/30 transition-colors text-sm"
+                                  onClick={() => approveReservation(r.id)}
+                                >
+                                  Approve
+                                </button>
+                                <button
+                                  className="bg-red-500/20 text-red-300 px-3 py-1 rounded-lg hover:bg-red-500/30 transition-colors text-sm"
+                                  onClick={() => rejectReservation(r.id)}
+                                >
+                                  Reject
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
-            {tools.length === 0 ? (
-              <p className="text-neutral-500 text-center py-8">No tools available.</p>
-            ) : (
-              <Table>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>ID</Table.Th>
-                    <Table.Th>Name</Table.Th>
-                    <Table.Th>Category</Table.Th>
-                    <Table.Th>Actions</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {tools.map((t) => (
-                    <Table.Tr key={t.id}>
-                      <Table.Td>{t.id}</Table.Td>
-                      <Table.Td className="font-medium">{t.name}</Table.Td>
-                      <Table.Td>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                          {t.category}
-                        </span>
-                      </Table.Td>
-                      <Table.Td>
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() => deleteTool(t.id)}
-                        >
-                          Delete
-                        </Button>
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-            )}
-          </Card>
-
-          <Card>
-            <h2 className="text-xl font-semibold text-neutral-900 mb-6">Reservations Management</h2>
-            {reservations.length === 0 ? (
-              <p className="text-neutral-500 text-center py-8">No reservations found.</p>
-            ) : (
-              <Table>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>ID</Table.Th>
-                    <Table.Th>Tool</Table.Th>
-                    <Table.Th>User</Table.Th>
-                    <Table.Th>Start Date</Table.Th>
-                    <Table.Th>End Date</Table.Th>
-                    <Table.Th>Status</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {reservations.map((r) => (
-                    <Table.Tr key={r.id}>
-                      <Table.Td>{r.id}</Table.Td>
-                      <Table.Td className="font-medium">{r.tool_name}</Table.Td>
-                      <Table.Td>{r.user_name || "N/A"}</Table.Td>
-                      <Table.Td>{new Date(r.start_date).toLocaleDateString()}</Table.Td>
-                      <Table.Td>{new Date(r.end_date).toLocaleDateString()}</Table.Td>
-                      <Table.Td>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(r.status)}`}>
-                          {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
-                        </span>
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-            )}
-          </Card>
-
-          <Card>
-            <h2 className="text-xl font-semibold text-neutral-900 mb-6">Damage Reports</h2>
-            {reports.length === 0 ? (
-              <p className="text-neutral-500 text-center py-8">No reports found.</p>
-            ) : (
-              <Table>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>ID</Table.Th>
-                    <Table.Th>Tool</Table.Th>
-                    <Table.Th>Reporter</Table.Th>
-                    <Table.Th>Description</Table.Th>
-                    <Table.Th>Status</Table.Th>
-                    <Table.Th>Actions</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {reports.map((r) => (
-                    <Table.Tr key={r.id}>
-                      <Table.Td>{r.id}</Table.Td>
-                      <Table.Td className="font-medium">{r.tool_name}</Table.Td>
-                      <Table.Td>{r.reporter}</Table.Td>
-                      <Table.Td className="max-w-xs truncate" title={r.description}>
-                        {r.description}
-                      </Table.Td>
-                      <Table.Td>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          r.resolved
-                            ? "text-green-600 bg-green-50"
-                            : "text-yellow-600 bg-yellow-50"
-                        }`}>
-                          {r.resolved ? "Resolved" : "Pending"}
-                        </span>
-                      </Table.Td>
-                      <Table.Td>
-                        {!r.resolved && (
-                          <Button
-                            size="sm"
-                            onClick={() => resolveReport(r.id)}
-                          >
-                            Resolve
-                          </Button>
-                        )}
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-            )}
-          </Card>
-        </div>
-
-        <Modal isOpen={showPendingModal} onClose={() => setShowPendingModal(false)} title="Pending Reservations">
-          {pendingReservations.length === 0 ? (
-            <p className="text-neutral-500 text-center py-8">No pending reservations.</p>
-          ) : (
-            <Table>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>ID</Table.Th>
-                  <Table.Th>Tool</Table.Th>
-                  <Table.Th>User</Table.Th>
-                  <Table.Th>Start Date</Table.Th>
-                  <Table.Th>End Date</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {pendingReservations.map((r) => (
-                  <Table.Tr key={r.id}>
-                    <Table.Td>{r.id}</Table.Td>
-                    <Table.Td className="font-medium">{r.tool_name}</Table.Td>
-                    <Table.Td>{r.user_name || "N/A"}</Table.Td>
-                    <Table.Td>{new Date(r.start_date).toLocaleDateString()}</Table.Td>
-                    <Table.Td>{new Date(r.end_date).toLocaleDateString()}</Table.Td>
-                    <Table.Td>
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => approveReservation(r.id)}
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() => rejectReservation(r.id)}
-                        >
-                          Reject
-                        </Button>
-                      </div>
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
           )}
-        </Modal>
 
-        <ToastContainer toasts={toasts} removeToast={removeToast} />
-      </Container>
+          <ToastContainer toasts={toasts} removeToast={removeToast} />
+        </div>
+      </div>
     </div>
   );
 };
