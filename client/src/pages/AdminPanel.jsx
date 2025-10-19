@@ -6,13 +6,16 @@ import Button from "../components/Button";
 import Table from "../components/Table";
 import Spinner from "../components/Spinner";
 import { ToastContainer } from "../components/Toast";
+import Modal from "../components/Modal";
 
 const AdminPanel = () => {
   const [tools, setTools] = useState([]);
   const [reports, setReports] = useState([]);
   const [reservations, setReservations] = useState([]);
+  const [pendingReservations, setPendingReservations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [toasts, setToasts] = useState([]);
+  const [showPendingModal, setShowPendingModal] = useState(false);
 
   const addToast = (message, type = "success") => {
     const id = Date.now();
@@ -25,14 +28,16 @@ const AdminPanel = () => {
 
   const fetchAll = async () => {
     try {
-      const [t, r, res] = await Promise.all([
+      const [t, r, res, pendingRes] = await Promise.all([
         api.get("/tools"),
         api.get("/reports"),
-        api.get("/reservations")
+        api.get("/reservations"),
+        api.get("/reservations/pending")
       ]);
       setTools(t.data);
       setReports(r.data);
       setReservations(res.data);
+      setPendingReservations(pendingRes.data);
     } catch (err) {
       addToast("Failed to load admin data", "error");
     } finally {
@@ -57,6 +62,26 @@ const AdminPanel = () => {
       fetchAll();
     } catch (err) {
       addToast("Failed to delete tool", "error");
+    }
+  };
+
+  const approveReservation = async (id) => {
+    try {
+      await api.patch(`/reservations/${id}/status`, { status: 'approved' });
+      addToast("Reservation approved successfully!");
+      fetchAll();
+    } catch (err) {
+      addToast("Failed to approve reservation", "error");
+    }
+  };
+
+  const rejectReservation = async (id) => {
+    try {
+      await api.patch(`/reservations/${id}/status`, { status: 'rejected' });
+      addToast("Reservation rejected successfully!");
+      fetchAll();
+    } catch (err) {
+      addToast("Failed to reject reservation", "error");
     }
   };
 
@@ -98,9 +123,14 @@ const AdminPanel = () => {
           <Card>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <h2 className="text-xl font-semibold text-neutral-900">Tools Management</h2>
-              <Button onClick={() => addToast("Add tool functionality not implemented", "info")}>
-                Add New Tool
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={() => setShowPendingModal(true)} variant="secondary" className="w-full sm:w-auto">
+                  Pending Reservations ({pendingReservations.length})
+                </Button>
+                <Button onClick={() => addToast("Add tool functionality not implemented", "info")} className="w-full sm:w-auto">
+                  Add New Tool
+                </Button>
+              </div>
             </div>
             {tools.length === 0 ? (
               <p className="text-neutral-500 text-center py-8">No tools available.</p>
@@ -227,6 +257,53 @@ const AdminPanel = () => {
             )}
           </Card>
         </div>
+
+        <Modal isOpen={showPendingModal} onClose={() => setShowPendingModal(false)} title="Pending Reservations">
+          {pendingReservations.length === 0 ? (
+            <p className="text-neutral-500 text-center py-8">No pending reservations.</p>
+          ) : (
+            <Table>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>ID</Table.Th>
+                  <Table.Th>Tool</Table.Th>
+                  <Table.Th>User</Table.Th>
+                  <Table.Th>Start Date</Table.Th>
+                  <Table.Th>End Date</Table.Th>
+                  <Table.Th>Actions</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {pendingReservations.map((r) => (
+                  <Table.Tr key={r.id}>
+                    <Table.Td>{r.id}</Table.Td>
+                    <Table.Td className="font-medium">{r.tool_name}</Table.Td>
+                    <Table.Td>{r.user_name || "N/A"}</Table.Td>
+                    <Table.Td>{new Date(r.start_date).toLocaleDateString()}</Table.Td>
+                    <Table.Td>{new Date(r.end_date).toLocaleDateString()}</Table.Td>
+                    <Table.Td>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => approveReservation(r.id)}
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => rejectReservation(r.id)}
+                        >
+                          Reject
+                        </Button>
+                      </div>
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          )}
+        </Modal>
 
         <ToastContainer toasts={toasts} removeToast={removeToast} />
       </Container>

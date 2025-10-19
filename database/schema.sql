@@ -3,7 +3,9 @@ CREATE TABLE users (
   name VARCHAR(100) NOT NULL,
   email VARCHAR(150) UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
-  role VARCHAR(10) CHECK(role IN ('member', 'admin')) NOT NULL
+  role VARCHAR(10) CHECK(role IN ('member', 'admin')) NOT NULL,
+  reset_token TEXT,
+  reset_expires TIMESTAMP
 );
 
 
