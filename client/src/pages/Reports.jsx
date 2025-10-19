@@ -74,125 +74,129 @@ const Reports = () => {
 
   if (isLoading) {
     return (
-      <Container className="py-12">
-        <div className="text-center">
-          <Spinner size="lg" className="mx-auto mb-4" />
-          <p className="text-neutral-600">Loading reports...</p>
-        </div>
-      </Container>
+      <div className="min-h-screen pt-20">
+        <Container className="py-12">
+          <div className="text-center">
+            <Spinner size="lg" className="mx-auto mb-4" />
+            <p className="text-neutral-600">Loading reports...</p>
+          </div>
+        </Container>
+      </div>
     );
   }
 
   return (
-    <Container className="py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral-900 mb-2">Damage Reports</h1>
-        <p className="text-neutral-600">Report damaged tools and view report history</p>
-      </div>
+    <div className="min-h-screen pt-20">
+        <Container className="py-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-neutral-900 mb-2">Reports</h1>
+            <p className="text-neutral-600">Report damaged tools and view report history</p>
+          </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1">
-          <Card>
-            <h2 className="text-xl font-semibold text-neutral-900 mb-6">Report Damage</h2>
-            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-              <FormInput
-                label="Tool ID"
-                type="number"
-                name="tool_id"
-                id="tool_id"
-                value={formData.tool_id}
-                onChange={handleChange}
-                error={errors.tool_id}
-                placeholder="Enter tool ID"
-                required
-                min="1"
-              />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-1">
+              <Card>
+                <h2 className="text-xl font-semibold text-neutral-900 mb-6">Report Damage</h2>
+                <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                  <FormInput
+                    label="Tool ID"
+                    type="number"
+                    name="tool_id"
+                    id="tool_id"
+                    value={formData.tool_id}
+                    onChange={handleChange}
+                    error={errors.tool_id}
+                    placeholder="Enter tool ID"
+                    required
+                    min="1"
+                  />
 
-              <div className="mb-4">
-                <label className="label" htmlFor="description">
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className={`input resize-none ${errors.description ? "border-red-500 focus:ring-red-500 focus:border-red-500" : ""}`}
-                  placeholder="Describe the damage or issue..."
-                  rows="4"
-                  required
-                />
-                {errors.description && (
-                  <p className="mt-1 text-sm text-red-600" role="alert">
-                    {errors.description}
-                  </p>
-                )}
-              </div>
+                  <div className="mb-4">
+                    <label className="label" htmlFor="description">
+                      Description
+                    </label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      value={formData.description}
+                      onChange={handleChange}
+                      className={`input resize-none ${errors.description ? "border-red-500 focus:ring-red-500 focus:border-red-500" : ""}`}
+                      placeholder="Describe the damage or issue..."
+                      rows="4"
+                      required
+                    />
+                    {errors.description && (
+                      <p className="mt-1 text-sm text-red-600" role="alert">
+                        {errors.description}
+                      </p>
+                    )}
+                  </div>
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Spinner size="sm" className="mr-2" />
-                    Submitting...
-                  </>
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Spinner size="sm" className="mr-2" />
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit Report"
+                    )}
+                  </Button>
+                </form>
+              </Card>
+            </div>
+
+            <div className="lg:col-span-2">
+              <Card>
+                <h2 className="text-xl font-semibold text-neutral-900 mb-6">Report History</h2>
+                {reports.length === 0 ? (
+                  <p className="text-neutral-500 text-center py-8">No reports found.</p>
                 ) : (
-                  "Submit Report"
+                  <Table>
+                    <Table.Thead>
+                      <Table.Tr>
+                        <Table.Th>ID</Table.Th>
+                        <Table.Th>Tool</Table.Th>
+                        <Table.Th>Reporter</Table.Th>
+                        <Table.Th>Description</Table.Th>
+                        <Table.Th>Status</Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                      {reports.map((r) => (
+                        <Table.Tr key={r.id}>
+                          <Table.Td>{r.id}</Table.Td>
+                          <Table.Td className="font-medium">{r.tool_name}</Table.Td>
+                          <Table.Td>{r.reporter}</Table.Td>
+                          <Table.Td className="max-w-xs truncate" title={r.description}>
+                            {r.description}
+                          </Table.Td>
+                          <Table.Td>
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              r.resolved
+                                ? "text-green-600 bg-green-50"
+                                : "text-yellow-600 bg-yellow-50"
+                            }`}>
+                              {r.resolved ? "Resolved" : "Pending"}
+                            </span>
+                          </Table.Td>
+                        </Table.Tr>
+                      ))}
+                    </Table.Tbody>
+                  </Table>
                 )}
-              </Button>
-            </form>
-          </Card>
-        </div>
+              </Card>
+            </div>
+          </div>
 
-        <div className="lg:col-span-2">
-          <Card>
-            <h2 className="text-xl font-semibold text-neutral-900 mb-6">Report History</h2>
-            {reports.length === 0 ? (
-              <p className="text-neutral-500 text-center py-8">No reports found.</p>
-            ) : (
-              <Table>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>ID</Table.Th>
-                    <Table.Th>Tool</Table.Th>
-                    <Table.Th>Reporter</Table.Th>
-                    <Table.Th>Description</Table.Th>
-                    <Table.Th>Status</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {reports.map((r) => (
-                    <Table.Tr key={r.id}>
-                      <Table.Td>{r.id}</Table.Td>
-                      <Table.Td className="font-medium">{r.tool_name}</Table.Td>
-                      <Table.Td>{r.reporter}</Table.Td>
-                      <Table.Td className="max-w-xs truncate" title={r.description}>
-                        {r.description}
-                      </Table.Td>
-                      <Table.Td>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          r.resolved
-                            ? "text-green-600 bg-green-50"
-                            : "text-yellow-600 bg-yellow-50"
-                        }`}>
-                          {r.resolved ? "Resolved" : "Pending"}
-                        </span>
-                      </Table.Td>
-                    </Table.Tr>
-                  ))}
-                </Table.Tbody>
-              </Table>
-            )}
-          </Card>
-        </div>
+          <ToastContainer toasts={toasts} removeToast={removeToast} />
+        </Container>
       </div>
-
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
-    </Container>
-  );
+    );
 };
 
 export default Reports;

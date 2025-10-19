@@ -5,7 +5,29 @@ import fs from "fs";
 
 export const getAllTools = async (req, res) => {
   try {
-    const result = await pool.query("SELECT id, name, description, category, image_url FROM tools ORDER BY id DESC");
+    // Get tools with their current reservation status
+    const query = `
+      SELECT
+        t.id,
+        t.name,
+        t.description,
+        t.category,
+        t.image_url,
+        CASE
+          WHEN r.tool_id IS NOT NULL THEN 'In Use'
+          ELSE 'Available'
+        END as status
+      FROM tools t
+      LEFT JOIN (
+        SELECT DISTINCT tool_id
+        FROM reservations
+        WHERE status IN ('approved', 'active')
+        AND start_date <= CURRENT_DATE
+        AND end_date >= CURRENT_DATE
+      ) r ON t.id = r.tool_id
+      ORDER BY t.id DESC
+    `;
+    const result = await pool.query(query);
     res.json(result.rows);
   } catch (err) {
     console.error("getAllTools", err);

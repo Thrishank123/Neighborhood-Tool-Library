@@ -8,13 +8,17 @@
     @apply scroll-smooth;
   }
   body {
-    @apply bg-neutral-50 text-neutral-800 antialiased font-sans;
+    @apply bg-[#F9FAFB] text-neutral-800 antialiased;
+    font-family: 'Inter', 'Poppins', sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold text-neutral-900;
+    @apply font-extrabold text-neutral-900;
+  }
+  h2, h3, h4, h5, h6 {
+    @apply font-medium;
   }
   p {
-    @apply text-neutral-700;
+    @apply text-neutral-700 font-normal;
   }
   a {
     @apply text-primary hover:text-primary/80 transition-colors;

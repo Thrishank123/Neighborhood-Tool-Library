@@ -1,12 +1,14 @@
-import { Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Menu, X, Search, Plus, LogOut } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     logout();
@@ -20,32 +22,45 @@ const Navbar = () => {
     closeMenu();
   }, [navigate]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const navLinks = user ? [
-    { to: "/tools", label: "Tools" },
+    { to: "/tools", label: "Dashboard" },
     { to: "/reservations", label: "Reservations" },
-    { to: "/reviews", label: "Reviews" },
     { to: "/reports", label: "Reports" },
-    ...(user.role === "admin" ? [{ to: "/admin", label: "Admin" }] : []),
   ] : [
     { to: "/login", label: "Login" },
     { to: "/register", label: "Register" },
   ];
 
   return (
-    <nav className="bg-primary text-white shadow-lg" role="navigation" aria-label="Main navigation">
+    <nav className="fixed top-0 left-0 right-0 bg-white border-b border-neutral-200 shadow-sm z-50" role="navigation" aria-label="Main navigation">
       <div className="container-max">
         <div className="flex justify-between items-center py-4">
-          <button
-            onClick={() => navigate("/tools")}
-            className="text-xl font-bold hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary rounded"
-            aria-label="Go to tools page"
-          >
-            🧰 Tool Library
-          </button>
+          {/* Left Side - Logo */}
+          <div className="flex items-center space-x-2">
+            <div className="w-6 h-6 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-xs">⭐</span>
+            </div>
+            <span className="text-lg font-bold text-neutral-900">Tool Library</span>
+          </div>
 
+          {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-md hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
+            className="md:hidden p-2 rounded-md hover:bg-neutral-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
             aria-label="Toggle navigation menu"
@@ -53,67 +68,135 @@ const Navbar = () => {
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
+          {/* Right Side - Desktop */}
           <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="text-white hover:text-neutral-200 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary rounded px-2 py-1"
+                className="text-neutral-600 hover:text-primary transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
               >
                 {link.label}
               </Link>
             ))}
+
             {user && (
-              <button
-                onClick={handleLogout}
-                className="btn btn-secondary text-sm"
-                aria-label="Logout"
-              >
-                Logout
-              </button>
+              <>
+                {user.role === "admin" && (
+                  <button
+                    onClick={() => navigate("/admin")}
+                    className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 flex items-center space-x-2"
+                    aria-label="Add new tool"
+                  >
+                    <Plus size={16} />
+                    <span>Add New Tool</span>
+                  </button>
+                )}
+
+                {/* User Avatar with Dropdown */}
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-xs hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    aria-expanded={isDropdownOpen}
+                    aria-haspopup="true"
+                    aria-label="User menu"
+                  >
+                    {(user.name || user.email).charAt(0).toUpperCase()}
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 sm:w-56 bg-white rounded-md shadow-lg border border-neutral-200 py-1 z-50 max-w-[calc(100vw-2rem)]">
+                      <div className="px-4 py-2 border-b border-neutral-200">
+                        <p className="text-sm font-medium text-neutral-900 truncate">{user.name}</p>
+                        <p className="text-xs text-neutral-500 truncate">{user.email}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsDropdownOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 flex items-center space-x-2 focus:outline-none focus:bg-neutral-50"
+                        aria-label="Logout"
+                      >
+                        <LogOut size={16} />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </div>
         </div>
 
         {/* Mobile menu */}
-        <div
-          id="mobile-menu"
-          className={`md:hidden transition-all duration-300 ease-in-out ${
-            isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
-          }`}
-          aria-hidden={!isOpen}
-        >
-          <div className="py-4 space-y-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={closeMenu}
-                className="block px-4 py-2 text-white hover:bg-primary/80 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
-              >
-                {link.label}
-              </Link>
-            ))}
-            {user && (
-              <div className="px-4 py-2 border-t border-primary/20 mt-2 pt-4">
-                <div className="text-sm text-neutral-200 mb-2">Welcome, {user.name}</div>
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    closeMenu();
-                  }}
-                  className="w-full text-left px-3 py-2 text-white hover:bg-primary/80 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
-                  aria-label="Logout"
+        {isOpen && (
+          <div
+            id="mobile-menu"
+            className="md:hidden bg-white border-t border-neutral-200 shadow-lg"
+            aria-hidden={!isOpen}
+          >
+            <div className="py-4 space-y-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={closeMenu}
+                  className="block px-4 py-2 text-neutral-600 hover:bg-neutral-50 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 >
-                  Logout
-                </button>
-              </div>
-            )}
+                  {link.label}
+                </Link>
+              ))}
+
+              {user && (
+                <>
+                  {user.role === "admin" && (
+                    <button
+                      onClick={() => {
+                        navigate("/admin");
+                        closeMenu();
+                      }}
+                      className="w-full text-left px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 flex items-center space-x-2"
+                      aria-label="Add new tool"
+                    >
+                      <Plus size={16} />
+                      <span>Add New Tool</span>
+                    </button>
+                  )}
+
+                  <div className="px-4 py-2 border-t border-neutral-200 mt-2 pt-4">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-xs">
+                        {(user.name || user.email).charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-neutral-900">{user.name}</p>
+                        <p className="text-xs text-neutral-500">{user.email}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        closeMenu();
+                      }}
+                      className="w-full text-left px-3 py-2 text-neutral-600 hover:bg-neutral-50 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 flex items-center space-x-2"
+                      aria-label="Logout"
+                    >
+                      <LogOut size={16} />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </nav>
   );
 };
 
 export default Navbar;
+  

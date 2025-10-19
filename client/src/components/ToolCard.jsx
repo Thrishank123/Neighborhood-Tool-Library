@@ -6,13 +6,29 @@ const ToolCard = ({ tool, onReserve }) => {
     ? `http://localhost:5000${tool.image_url}`
     : "https://via.placeholder.com/300x200?text=No+Image";
 
+  // Status now comes from the API response
+  const status = tool.status || 'Available';
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Available':
+        return 'bg-green-100 text-green-800';
+      case 'In Use':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Maintenance':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-neutral-100 text-neutral-800';
+    }
+  };
+
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300">
-      <div className="aspect-video mb-4 overflow-hidden rounded-lg bg-neutral-100">
+    <Card className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden">
+      <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-neutral-100">
         <img
           src={img}
           alt={`Image of ${tool.name}`}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
           loading="lazy"
         />
       </div>
@@ -21,16 +37,21 @@ const ToolCard = ({ tool, onReserve }) => {
         <h3 className="text-lg font-semibold text-neutral-900 mb-2 line-clamp-2">
           {tool.name}
         </h3>
-        <p className="text-sm text-neutral-600 mb-3 line-clamp-3">
-          {tool.description}
-        </p>
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-            {tool.category}
+
+        {/* Status Badge */}
+        <div className="mb-3">
+          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
+            {status}
           </span>
-          <span className="text-xs text-neutral-500">
+        </div>
+
+        <div className="space-y-1 mb-4">
+          <p className="text-xs text-neutral-500">
             ID: {tool.id}
-          </span>
+          </p>
+          <p className="text-xs text-neutral-500">
+            Category: {tool.category}
+          </p>
         </div>
       </div>
 
@@ -40,7 +61,7 @@ const ToolCard = ({ tool, onReserve }) => {
           className="w-full"
           size="sm"
         >
-          Reserve Tool
+          Reserve
         </Button>
       </div>
     </Card>
