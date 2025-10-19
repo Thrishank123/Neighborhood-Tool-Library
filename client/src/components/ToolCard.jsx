@@ -23,18 +23,18 @@ const ToolCard = ({ tool, onReserve }) => {
   };
 
   return (
-    <Card className="group hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden relative">
+    <Card className="rounded-xl overflow-hidden">
       <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-neutral-100">
-          <img  
+          <img
           src={img}
           alt={`Image of ${tool.name}`}
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-contain"
           loading="lazy"
         />
       </div>
 
       <div className="flex-1">
-        <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">
+        <h3 className="text-xl md:text-2xl font-bold text-black mb-2 line-clamp-2">
           {tool.name}
         </h3>
 
@@ -46,10 +46,10 @@ const ToolCard = ({ tool, onReserve }) => {
         </div>
 
         <div className="space-y-1 mb-4">
-          <p className="text-xs text-white/60">
+          <p className="text-xs text-black">
             ID: {tool.id}
           </p>
-          <p className="text-xs text-white/60">
+          <p className="text-xs text-black">
             Category: {tool.category}
           </p>
         </div>
@@ -63,16 +63,6 @@ const ToolCard = ({ tool, onReserve }) => {
         >
           Reserve
         </Button>
-      </div>
-
-      {/* Hover overlay with "View" button */}
-      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
-        <button
-          onClick={onReserve}
-          className="bg-white text-neutral-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
-        >
-          View Details
-        </button>
       </div>
     </Card>
   );

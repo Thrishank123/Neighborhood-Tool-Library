@@ -82,7 +82,7 @@ const Login = () => {
             <div className="w-full max-w-md">
               {/* Logo */}
               <div className="text-center mb-8">
-              <h1 className="text-19xl font-bold text-neutral-900 mb-2">Welcome Back</h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">Welcome Back</h1>
                 <p className="text-neutral-600">Sign into your account</p>
               </div>
 

@@ -77,7 +77,7 @@ const Navbar = () => {
             <Link
               key={link.to}
               to={link.to}
-              className={`px-4 py-2 rounded-full font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent ${
+              className={`px-4 py-2 rounded-full font-bold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent ${
                 isActiveLink(link.to)
                   ? "bg-primary text-white"
                   : "text-white/80 hover:text-white hover:bg-white/20 hover:shadow-lg"
@@ -92,11 +92,11 @@ const Navbar = () => {
               {user.role === "admin" && (
                 <button
                   onClick={() => navigate("/admin")}
-                  className="bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-transparent flex items-center space-x-2"
-                  aria-label="Add new tool"
+                  className="bg-white text-primary px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary flex items-center space-x-2 shadow-lg whitespace-nowrap"
+                  aria-label="Admin"
                 >
                   <Plus size={16} />
-                  <span>Add New Tool</span>
+                  <span>Admin</span>
                 </button>
               )}
 
@@ -142,7 +142,7 @@ const Navbar = () => {
       {isOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden absolute top-full left-0 right-0 mt-2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl overflow-hidden"
+          className="md:hidden absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-2xl shadow-2xl overflow-hidden"
           aria-hidden={!isOpen}
         >
           <div className="py-4 space-y-2">
@@ -151,10 +151,10 @@ const Navbar = () => {
                 key={link.to}
                 to={link.to}
                 onClick={closeMenu}
-                className={`block px-4 py-2 mx-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent ${
+                className={`block px-4 py-2 mx-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-transparent ${
                   isActiveLink(link.to)
                     ? "bg-primary text-white"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
+                    : "text-neutral-900 hover:text-primary hover:bg-gray-100"
                 }`}
               >
                 {link.label}
@@ -169,22 +169,22 @@ const Navbar = () => {
                       navigate("/admin");
                       closeMenu();
                     }}
-                    className="w-full text-left mx-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-transparent flex items-center space-x-2"
-                    aria-label="Add new tool"
+                    className="w-full text-left mx-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-transparent flex items-center space-x-2 whitespace-nowrap"
+                    aria-label="Admin Dashboard"
                   >
                     <Plus size={16} />
-                    <span>Add New Tool</span>
+                    <span>Admin</span>
                   </button>
                 )}
 
-                <div className="px-4 py-2 border-t border-white/20 mt-2 pt-4">
+                <div className="px-4 py-2 border-t border-gray-200 mt-2 pt-4">
                   <div className="flex items-center space-x-3 mb-3">
                     <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-medium text-xs">
                       {(user.name || user.email).charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">{user.name}</p>
-                      <p className="text-xs text-white/60">{user.email}</p>
+                      <p className="text-sm font-medium text-neutral-900">{user.name}</p>
+                      <p className="text-xs text-neutral-600">{user.email}</p>
                     </div>
                   </div>
                   <button
@@ -192,7 +192,7 @@ const Navbar = () => {
                       handleLogout();
                       closeMenu();
                     }}
-                    className="w-full text-left px-3 py-2 text-white/80 hover:bg-white/10 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent flex items-center space-x-2"
+                    className="w-full text-left px-3 py-2 text-neutral-900 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-transparent flex items-center space-x-2"
                     aria-label="Logout"
                   >
                     <LogOut size={16} />

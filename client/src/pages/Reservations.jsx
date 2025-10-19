@@ -60,7 +60,7 @@ const Reservations = () => {
     <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
       <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
-          <h2 className="text-19xl font-bold text-white mb-8">My Reservations</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">My Reservations</h2>
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 mb-8">
             <h3 className="text-xl font-semibold text-white mb-4">Request a Reservation</h3>
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">

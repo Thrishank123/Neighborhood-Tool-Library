@@ -102,7 +102,7 @@ const Tools = () => {
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               {/* Title Section */}
               <div className="flex-1">
-                <h1 className="text-21xl font-bold text-white mb-2">
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
                   Available Tools
                 </h1>
                 <p className="text-17xl text-white/80 max-w-2xl">

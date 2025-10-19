@@ -118,14 +118,14 @@ const AdminPanel = () => {
       <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
           <div className="mb-8">
-            <h1 className="text-19xl font-bold text-white mb-2">Admin Panel</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Admin Panel</h1>
             <p className="text-16xl text-white/80">Manage tools, reservations, and damage reports</p>
           </div>
 
           <div className="space-y-8">
             <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <h2 className="text-xl font-semibold text-white">Tools Management</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-white">Tools Management</h2>
                 <div className="flex gap-2">
                   <button onClick={() => setShowPendingModal(true)} className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors w-full sm:w-auto">
                     Pending Reservations ({pendingReservations.length})
@@ -175,7 +175,7 @@ const AdminPanel = () => {
             </div>
 
             <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
-              <h2 className="text-xl font-semibold text-white mb-6">Reservations Management</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Reservations Management</h2>
               {reservations.length === 0 ? (
                 <p className="text-white/60 text-center py-8">No reservations found.</p>
               ) : (
@@ -213,7 +213,7 @@ const AdminPanel = () => {
             </div>
 
             <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
-              <h2 className="text-xl font-semibold text-white mb-6">Damage Reports</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Damage Reports</h2>
               {reports.length === 0 ? (
                 <p className="text-white/60 text-center py-8">No reports found.</p>
               ) : (

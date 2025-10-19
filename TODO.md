@@ -1,19 +1,24 @@
-# TODO: Connect Styling for Reservations Page and Add Navigation Flow
+# UI Improvements Task
 
-- [x] Update form inputs to use "input" className
-- [x] Update submit button to use "btn btn-primary" className
-- [x] Change table className from "data-table" to "table"
-- [x] Wrap form in a "card" div with margin bottom
-- [x] Wrap table in a "card" div
-- [x] Add container and padding classes to main div
-- [x] Make form responsive with grid layout on medium screens
-- [x] Make table responsive with horizontal scroll on small screens
-- [x] Navigate to reservations page after successful reserve from tools page
-- [x] Pre-populate tool_id in reservations form when navigated with query param
+## Improve Typographic Hierarchy
+- [ ] Update NavBar.jsx: Apply bold font weight to desktop navigation links
+- [ ] Update card headers (h2/h3) across all pages: Increase font size, apply bold weight, make responsive
+  - [ ] AdminPanel.jsx: h2 and h3 elements
+  - [ ] Login.jsx: h2 elements
+  - [ ] Register.jsx: h2 elements
+  - [ ] Reports.jsx: h2 elements
+  - [ ] Reservations.jsx: h2 and h3 elements
+  - [ ] Reviews.jsx: h2 elements
+  - [ ] ToolCard.jsx: h3 elements
+  - [ ] Modal.jsx: h3 elements
 
-# TODO: Implement Tool Return Functionality
+## Overhaul Mobile Navigation Menu
+- [ ] Update NavBar.jsx: Replace glassmorphism with opaque white background, use black text for links, fix logout button visibility
 
-- [x] Add returnReservation function in server/controllers/reservationController.js to allow users to close their active reservations
-- [x] Add PATCH /:id/return route in server/routes/reservations.js for authenticated users
-- [x] Update client/src/pages/Reservations.jsx to show Return button for active reservations and handle return API call
-- [x] Test the return functionality to ensure reservation status changes to 'closed' and tool becomes available
+## Redesign "Add New Tool" Button
+- [ ] Update NavBar.jsx: Style as filled, pill-shaped button with contrasting solid background
+
+## Testing
+- [ ] Test responsiveness on different screen sizes
+- [ ] Verify text visibility and contrast
+- [ ] Check mobile menu functionality and logout button accessibility

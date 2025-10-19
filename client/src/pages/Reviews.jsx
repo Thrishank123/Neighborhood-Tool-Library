@@ -94,7 +94,7 @@ const Reviews = () => {
       <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
           <div className="mb-8">
-            <h1 className="text-19xl font-bold text-white mb-2">Reviews</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Reviews</h1>
             <p className="text-16xl text-white/80">Read and write reviews for tools</p>
           </div>
 
