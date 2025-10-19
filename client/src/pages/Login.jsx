@@ -59,7 +59,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[url('https://images.squarespace-cdn.com/content/v1/5263da08e4b0b68d00ba1ec4/1656095998584-U12F2E84U3047NPEB5PW/IMG_0193+(1).jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center p-4">
       {/* Outer Container - Glassmorphism Effect */}
       <div className="w-full max-w-6xl bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl overflow-hidden">
         {/* Inner Container - Content Card */}

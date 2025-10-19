@@ -40,6 +40,7 @@ const Navbar = () => {
   const navLinks = user ? [
     { to: "/tools", label: "Dashboard" },
     { to: "/reservations", label: "Reservations" },
+    { to: "/reviews", label: "Reviews" },
     { to: "/reports", label: "Reports" },
   ] : [
     { to: "/login", label: "Login" },

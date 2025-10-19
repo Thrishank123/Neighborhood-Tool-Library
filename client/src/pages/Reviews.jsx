@@ -90,12 +90,12 @@ const Reviews = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[url('https://images.squarespace-cdn.com/content/v1/5263da08e4b0b68d00ba1ec4/1656095998584-U12F2E84U3047NPEB5PW/IMG_0193+(1).jpg')] bg-cover bg-center bg-no-repeat pt-24">
+    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
       <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
           <div className="mb-8">
-            <h1 className="text-19xl font-bold text-gray-900 mb-2">Reviews</h1>
-            <p className="text-16xl text-gray-800">Read and write reviews for tools</p>
+            <h1 className="text-19xl font-bold text-white mb-2">Reviews</h1>
+            <p className="text-16xl text-white/80">Read and write reviews for tools</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

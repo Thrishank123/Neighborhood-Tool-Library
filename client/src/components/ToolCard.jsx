@@ -34,7 +34,7 @@ const ToolCard = ({ tool, onReserve }) => {
       </div>
 
       <div className="flex-1">
-        <h3 className="text-lg font-semibold text-neutral-900 mb-2 line-clamp-2">
+        <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">
           {tool.name}
         </h3>
 
@@ -46,10 +46,10 @@ const ToolCard = ({ tool, onReserve }) => {
         </div>
 
         <div className="space-y-1 mb-4">
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-white/60">
             ID: {tool.id}
           </p>
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-white/60">
             Category: {tool.category}
           </p>
         </div>
