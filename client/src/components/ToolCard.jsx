@@ -2,9 +2,10 @@ import Button from "./Button";
 import Card from "./Card";
 
 const ToolCard = ({ tool, onReserve }) => {
-  const img = tool.image_url
-    ? `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000'}${tool.image_url}`
-    : "https://via.placeholder.com/300x200?text=No+Image";
+  // --- THIS IS THE FIX ---
+  // Use the image_url directly from the tool object if it exists.
+  // It's already a complete URL from Cloudinary.
+  const img = tool.image_url || "https://via.placeholder.com/300x200?text=No+Image";
 
   // Status now comes from the API response
   const status = tool.status || 'Available';
@@ -68,3 +69,4 @@ const ToolCard = ({ tool, onReserve }) => {
 };
 
 export default ToolCard;
+
