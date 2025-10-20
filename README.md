@@ -4,7 +4,7 @@ A full-stack web application for managing a community tool-sharing library. Memb
 
 ## 🚀 Live Links
 
-- **Frontend**: [https://neighborhood-tool-library.vercel.app](https://neighborhood-tool-library.vercel.app)
+- **Frontend**: [https://neighborhood-tool-library-1.onrender.com](https://neighborhood-tool-library-1.onrender.com)
 - **Backend API**: [https://neighborhood-tool-library.onrender.com](https://neighborhood-tool-library.onrender.com)
 
 ## 📋 Project Overview
@@ -28,14 +28,14 @@ A full-stack web application for managing a community tool-sharing library. Memb
 
 ## 🖼️ Visual Showcase
 
-### Tool Catalog/Dashboard
-![Tool Catalog](https://via.placeholder.com/800x400?text=Tool+Catalog+Screenshot)
+### Available Tools Page
+![Available Tools](AvailTools.png)
 
-### Reservation Form
-![Reservation Form](https://via.placeholder.com/800x400?text=Reservation+Form+Screenshot)
+### Reservation Page
+![Reservation Page](reserve.png)
 
 ### Admin Panel
-![Admin Panel](https://via.placeholder.com/800x400?text=Admin+Panel+Screenshot)
+![Admin Panel](Admin.png)
 
 ## 🛠️ Local Setup Instructions
 
