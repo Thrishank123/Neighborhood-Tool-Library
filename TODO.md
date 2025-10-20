@@ -22,3 +22,10 @@
 - [ ] Test responsiveness on different screen sizes
 - [ ] Verify text visibility and contrast
 - [ ] Check mobile menu functionality and logout button accessibility
+
+# TODO: Implement Tool Return Functionality
+
+- [x] Add returnReservation function in server/controllers/reservationController.js to allow users to close their active reservations
+- [x] Add PATCH /:id/return route in server/routes/reservations.js for authenticated users
+- [x] Update client/src/pages/Reservations.jsx to show Return button for active reservations and handle return API call
+- [ ] Test the return functionality to ensure reservation status changes to 'closed' and tool becomes available

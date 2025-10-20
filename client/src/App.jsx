@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Spinner from "./components/Spinner";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Tools from "./pages/Tools";
@@ -11,8 +12,20 @@ import Reviews from "./pages/Reviews";
 import AdminPanel from "./pages/AdminPanel";
 
 const AppContent = () => {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const location = useLocation();
+
+  // Show loading spinner while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <Spinner size="lg" className="mx-auto mb-4" />
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Don't show navbar on login/register pages
   const showNavbar = user && !['/login', '/register'].includes(location.pathname);
