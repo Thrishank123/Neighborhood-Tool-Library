@@ -124,12 +124,12 @@ const Reservations = () => {
                       <td className="py-3 px-4">{new Date(r.end_date).toLocaleDateString()}</td>
                       <td className="py-3 px-4">{r.status}</td>
                       <td className="py-3 px-4">
-                        {['approved', 'active'].includes(r.status) && (
+                        {r.status === 'active' && (
                           <button
                             onClick={() => handleReturn(r.id)}
                             className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
                           >
-                            {r.status === 'active' ? 'Return' : 'Cancel'}
+                            Return
                           </button>
                         )}
                       </td>

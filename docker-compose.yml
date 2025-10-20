@@ -1,0 +1,47 @@
+services:
+  # Database Service (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: tool_library_db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Thrishank@143
+      - POSTGRES_DB=tool_library
+    volumes:
+      # This volume persists the database data
+      - postgres_data:/var/lib/postgresql/data
+      # This line runs the schema script on first launch
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - '5432:5432'
+
+  # Backend Service (Node.js API)
+  backend:
+    build: ./server # Path to the backend Dockerfile
+    container_name: tool_library_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_USER=postgres
+      - DB_HOST=db
+      - DB_NAME=tool_library
+      - DB_PASSWORD=Thrishank@143
+      - DB_PORT=5432
+      - JWT_SECRET=elNvu3CZlKECtlSqdyunQumCZLoCTGuSK1cxB83Ixck= # Change this
+    depends_on:
+      - db
+
+  # Frontend Service (React App)
+  frontend:
+    build: ./client # Path to the frontend Dockerfile
+    container_name: tool_library_frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
