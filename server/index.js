@@ -15,18 +15,16 @@ import { pool } from "./config/db.js";
 
 const app = express();
 
-// --- CORRECTED CORS CONFIGURATION ---
-const allowedOrigins = [
-  'http://localhost:3000', // For local development
-  'https://neighborhood-tool-library.vercel.app' // Your main production URL
-];
-
+// --- SIMPLIFIED CORS CONFIGURATION ---
 const corsOptions = {
   origin: (origin, callback) => {
-    // This logic allows your main URL, localhost, and ANY Vercel preview URL
-    if (!origin ||
-        allowedOrigins.includes(origin) ||
-        origin.endsWith('.vercel.app')) { // This is the dynamic check
+    // This dynamic check allows localhost, and any Vercel or Render domains.
+    const isAllowed = !origin || 
+                      origin.startsWith('http://localhost') || 
+                      origin.endsWith('.vercel.app') || 
+                      origin.endsWith('.onrender.com');
+
+    if (isAllowed) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -65,3 +63,5 @@ app.listen(PORT, async () => {
     console.error("❌ DB connection failed on startup:", err);
   }
 });
+
+
