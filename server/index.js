@@ -15,7 +15,29 @@ import reviewRoutes from "./routes/reviews.js";
 import { pool } from "./config/db.js";
 
 const app = express();
-app.use(cors());
+
+// --- CORS Configuration ---
+const allowedOrigins = [
+  'http://localhost:3000', // For local development
+  'https://neighborhood-tool-library.vercel.app', // Your main production URL
+  'https://neighborhood-tool-library-jgsnruq7h-thrishank123s-projects.vercel.app' // Specific preview URL
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+};
+
+app.use(cors(corsOptions)); // Use the cors middleware with your options
+// --- End of CORS Configuration ---
+
 app.use(express.json());
 
 // ensure uploads folder exists
