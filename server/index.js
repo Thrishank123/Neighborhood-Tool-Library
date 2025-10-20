@@ -1,4 +1,3 @@
-// server/index.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -16,27 +15,27 @@ import { pool } from "./config/db.js";
 
 const app = express();
 
-// --- CORS Configuration ---
+// --- CORRECTED CORS CONFIGURATION ---
 const allowedOrigins = [
   'http://localhost:3000', // For local development
-  'https://neighborhood-tool-library.vercel.app', // Your main production URL
-  'https://neighborhood-tool-library-jgsnruq7h-thrishank123s-projects.vercel.app' // Specific preview URL
+  'https://neighborhood-tool-library.vercel.app' // Your main production URL
 ];
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    // This logic allows your main URL, localhost, and ANY Vercel preview URL
+    if (!origin ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app')) { // This is the dynamic check
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-    return callback(null, true);
   }
 };
 
-app.use(cors(corsOptions)); // Use the cors middleware with your options
-// --- End of CORS Configuration ---
+app.use(cors(corsOptions));
+// --- END OF CORS CONFIGURATION ---
 
 app.use(express.json());
 
