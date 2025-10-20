@@ -44,6 +44,16 @@ const Reservations = () => {
     }
   };
 
+  const handleCancel = async (reservationId) => {
+    try {
+      await api.patch(`/reservations/${reservationId}/return`);
+      addToast("Reservation cancelled successfully!");
+      fetchReservations();
+    } catch (err) {
+      addToast(err.response?.data?.message || "Cancel failed", "error");
+    }
+  };
+
   useEffect(() => {
     fetchReservations();
   }, []);
@@ -124,13 +134,21 @@ const Reservations = () => {
                       <td className="py-3 px-4">{new Date(r.end_date).toLocaleDateString()}</td>
                       <td className="py-3 px-4">{r.status}</td>
                       <td className="py-3 px-4">
-                        {r.status === 'active' && (
-                          <button
-                            onClick={() => handleReturn(r.id)}
-                            className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
-                          >
-                            Return
-                          </button>
+                        {(r.status === 'active' || r.status === 'approved') && (
+                          <div className="flex flex-col sm:flex-row gap-2">
+                            <button
+                              onClick={() => handleReturn(r.id)}
+                              className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
+                            >
+                              Return
+                            </button>
+                            <button
+                              onClick={() => handleCancel(r.id)}
+                              className="bg-red-500/20 text-red-200 px-4 py-2 rounded-lg hover:bg-red-500/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         )}
                       </td>
                     </tr>
