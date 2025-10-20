@@ -35,21 +35,22 @@ export const getAllTools = async (req, res) => {
   }
 };
 
-export const addTool = async (req, res) => {
+export const createTool = async (req, res) => {
   try {
     const { name, description, category } = req.body;
-    const admin_id = req.user.id;
-    let image_url = null;
-    if (req.file) {
-      image_url = `/uploads/${req.file.filename}`;
-    }
+    // The image URL is now provided by Cloudinary via the middleware
+    const imageUrl = req.file ? req.file.path : null;
+    const adminId = req.user.id;
+
     const result = await pool.query(
-      "INSERT INTO tools (name, description, category, image_url, admin_id) VALUES ($1,$2,$3,$4,$5) RETURNING id, name, description, category, image_url",
-      [name, description, category, image_url, admin_id]
+      `INSERT INTO tools (name, description, category, image_url, admin_id)
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [name, description, category, imageUrl, adminId]
     );
+
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error("addTool", err);
+    console.error("createTool error", err);
     res.status(500).json({ message: "Server error" });
   }
 };

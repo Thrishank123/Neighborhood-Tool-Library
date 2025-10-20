@@ -17,8 +17,7 @@ const AdminPanel = () => {
   const [toasts, setToasts] = useState([]);
   const [showPendingModal, setShowPendingModal] = useState(false);
   const [showAddToolModal, setShowAddToolModal] = useState(false);
-  const [newTool, setNewTool] = useState({ name: "", description: "", category: "" });
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [formState, setFormState] = useState({ name: "", description: "", category: "", imageFile: null });
 
   const addToast = (message, type = "success") => {
     const id = Date.now();
@@ -346,20 +345,20 @@ const AdminPanel = () => {
                 </div>
                 <form onSubmit={async (e) => {
                   e.preventDefault();
-                  try {
-                    const formData = new FormData();
-                    formData.append('name', newTool.name);
-                    formData.append('description', newTool.description);
-                    formData.append('category', newTool.category);
-                    if (selectedImage) formData.append('image', selectedImage);
 
-                    await api.post('/tools', formData, {
-                      headers: { 'Content-Type': 'multipart/form-data' }
-                    });
+                  const formData = new FormData();
+                  formData.append('name', formState.name);
+                  formData.append('description', formState.description);
+                  formData.append('category', formState.category);
+                  // 'image' must match the name used in upload.single('image')
+                  formData.append('image', formState.imageFile);
+
+                  try {
+                    // Axios will automatically set the correct headers for FormData
+                    await api.post('/tools', formData);
                     addToast("Tool added successfully!");
                     setShowAddToolModal(false);
-                    setNewTool({ name: "", description: "", category: "" });
-                    setSelectedImage(null);
+                    setFormState({ name: "", description: "", category: "", imageFile: null });
                     fetchAll();
                   } catch (err) {
                     addToast("Failed to add tool", "error");
@@ -369,21 +368,21 @@ const AdminPanel = () => {
                     <input
                       type="text"
                       placeholder="Tool Name"
-                      value={newTool.name}
-                      onChange={(e) => setNewTool({ ...newTool, name: e.target.value })}
+                      value={formState.name}
+                      onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                       className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-primary"
                       required
                     />
                     <textarea
                       placeholder="Description"
-                      value={newTool.description}
-                      onChange={(e) => setNewTool({ ...newTool, description: e.target.value })}
+                      value={formState.description}
+                      onChange={(e) => setFormState({ ...formState, description: e.target.value })}
                       className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-primary h-24 resize-none"
                       required
                     />
                     <select
-                      value={newTool.category}
-                      onChange={(e) => setNewTool({ ...newTool, category: e.target.value })}
+                      value={formState.category}
+                      onChange={(e) => setFormState({ ...formState, category: e.target.value })}
                       className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
                       required
                     >
@@ -397,7 +396,7 @@ const AdminPanel = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => setSelectedImage(e.target.files[0])}
+                      onChange={(e) => setFormState({ ...formState, imageFile: e.target.files[0] })}
                       className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white file:bg-primary file:text-white file:border-none file:rounded file:px-3 file:py-1 file:mr-3"
                     />
                     <button
