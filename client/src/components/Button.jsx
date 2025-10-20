@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 
 const Button = forwardRef(({ children, variant = "primary", size = "md", className = "", ...props }, ref) => {
-  const baseClasses = "btn";
+  const baseClasses = "btn w-full sm:w-auto whitespace-nowrap";
   const variantClasses = {
     primary: "btn-primary",
     secondary: "btn-secondary",

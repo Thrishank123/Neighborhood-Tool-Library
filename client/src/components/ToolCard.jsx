@@ -58,7 +58,6 @@ const ToolCard = ({ tool, onReserve }) => {
       <div className="mt-4">
         <Button
           onClick={onReserve}
-          className="w-full"
           size="sm"
         >
           Reserve

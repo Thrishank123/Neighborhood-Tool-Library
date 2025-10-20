@@ -51,6 +51,32 @@ export const login = async (req, res) => {
   }
 };
 
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    // Check if user exists
+    const user = await pool.query("SELECT id, name FROM users WHERE email=$1", [email]);
+    if (!user.rows.length) {
+      // Don't reveal if email exists or not for security
+      return res.json({ message: "If an account with that email exists, password reset instructions have been sent." });
+    }
+
+    // Generate a reset token (simple implementation - in production, use proper JWT with expiration)
+    const resetToken = jwt.sign({ id: user.rows[0].id, email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    // In a real application, you would send an email here
+    // For now, we'll just return success
+    console.log(`Password reset token for ${email}: ${resetToken}`);
+
+    res.json({ message: "If an account with that email exists, password reset instructions have been sent." });
+  } catch (err) {
+    console.error("forgotPassword error", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const verifyToken = async (req, res) => {
   try {
     // The authenticate middleware already verifies the token and sets req.user

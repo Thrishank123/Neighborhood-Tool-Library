@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Spinner from "./components/Spinner";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
 import Tools from "./pages/Tools";
 import Reservations from "./pages/Reservations";
 import Reports from "./pages/Reports";
@@ -27,8 +28,8 @@ const AppContent = () => {
     );
   }
 
-  // Don't show navbar on login/register pages
-  const showNavbar = user && !['/login', '/register'].includes(location.pathname);
+  // Don't show navbar on login/register/forgot-password pages
+  const showNavbar = user && !['/login', '/register', '/forgot-password'].includes(location.pathname);
 
   return (
     <>
@@ -37,6 +38,7 @@ const AppContent = () => {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route
           path="/tools"

@@ -102,10 +102,10 @@ const Tools = () => {
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               {/* Title Section */}
               <div className="flex-1">
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
                   Available Tools
                 </h1>
-                <p className="text-17xl text-white/80 max-w-2xl">
+                <p className="text-sm md:text-base lg:text-lg text-white/80 max-w-2xl">
                   Browse, reserve, and manage all available equipment in the inventory.
                 </p>
               </div>
@@ -156,7 +156,7 @@ const Tools = () => {
               <p className="text-red-300 mb-4">{error}</p>
               <button
                 onClick={() => window.location.reload()}
-                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+                className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors w-full sm:w-auto whitespace-nowrap"
               >
                 Try Again
               </button>

@@ -86,7 +86,7 @@ const Login = () => {
             <div className="w-full max-w-md">
               {/* Logo */}
               <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-2">Welcome Back</h1>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-neutral-900 mb-2">Welcome Back</h1>
                 <p className="text-neutral-600">Sign into your account</p>
               </div>
 
@@ -142,7 +142,10 @@ const Login = () => {
 
               {/* Forgot Password Link */}
               <div className="mt-6 text-center">
-                <button className="text-primary hover:text-primary/80 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1">
+                <button
+                  onClick={() => navigate("/forgot-password")}
+                  className="text-primary hover:text-primary/80 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-2 py-1"
+                >
                   Forgot password?
                 </button>
               </div>

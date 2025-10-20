@@ -92,8 +92,8 @@ const Reports = () => {
       <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
           <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Reports</h1>
-            <p className="text-16xl text-white/80">Report damaged tools and view report history</p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">Reports</h1>
+            <p className="text-sm md:text-base lg:text-lg text-white/80">Report damaged tools and view report history</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -146,7 +146,7 @@ const Reports = () => {
 
                   <button
                     type="submit"
-                    className="w-full bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (

@@ -34,7 +34,7 @@ const AdminPanel = () => {
       const [t, r, res, pendingRes] = await Promise.all([
         api.get("/tools"),
         api.get("/reports/admin"),
-        api.get("/reservations/admin"),
+        api.get("/reservations/all"),
         api.get("/reservations/pending")
       ]);
       setTools(t.data);
@@ -102,9 +102,9 @@ const AdminPanel = () => {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
-        <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+  return (
+    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-32">
+      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
             <div className="text-center">
               <Spinner size="lg" className="mx-auto mb-4" />
@@ -117,23 +117,23 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
+    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-32">
       <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
           <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Admin Panel</h1>
-            <p className="text-16xl text-white/80">Manage tools, reservations, and damage reports</p>
+            <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-2">Admin Panel</h1>
+            <p className="text-sm md:text-base lg:text-lg text-white/80">Manage tools, reservations, and damage reports</p>
           </div>
 
           <div className="space-y-8">
             <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <h2 className="text-2xl md:text-3xl font-bold text-white">Tools Management</h2>
-                <div className="flex gap-2">
-                  <button onClick={() => setShowPendingModal(true)} className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors w-full sm:w-auto">
+                <div className="flex flex-row flex-wrap gap-2">
+                  <button onClick={() => setShowPendingModal(true)} className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors whitespace-nowrap">
                     Pending Reservations ({pendingReservations.length})
                   </button>
-                  <button onClick={() => setShowAddToolModal(true)} className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full sm:w-auto">
+                  <button onClick={() => setShowAddToolModal(true)} className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap">
                     Add New Tool
                   </button>
                 </div>
@@ -307,15 +307,15 @@ const AdminPanel = () => {
                             <td className="py-3 px-4">{new Date(r.start_date).toLocaleDateString()}</td>
                             <td className="py-3 px-4">{new Date(r.end_date).toLocaleDateString()}</td>
                             <td className="py-3 px-4">
-                              <div className="flex gap-2">
+                              <div className="flex flex-col sm:flex-row gap-2">
                                 <button
-                                  className="bg-green-500/20 text-green-300 px-3 py-1 rounded-lg hover:bg-green-500/30 transition-colors text-sm"
+                                  className="bg-green-500/20 text-green-300 px-3 py-1 rounded-lg hover:bg-green-500/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
                                   onClick={() => approveReservation(r.id)}
                                 >
                                   Approve
                                 </button>
                                 <button
-                                  className="bg-red-500/20 text-red-300 px-3 py-1 rounded-lg hover:bg-red-500/30 transition-colors text-sm"
+                                  className="bg-red-500/20 text-red-300 px-3 py-1 rounded-lg hover:bg-red-500/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
                                   onClick={() => rejectReservation(r.id)}
                                 >
                                   Reject
@@ -402,7 +402,7 @@ const AdminPanel = () => {
                     />
                     <button
                       type="submit"
-                      className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors"
+                      className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
                     >
                       Add Tool
                     </button>

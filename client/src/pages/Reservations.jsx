@@ -60,34 +60,44 @@ const Reservations = () => {
     <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
       <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">My Reservations</h2>
+          <h2 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-8">My Reservations</h2>
           <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6 mb-8">
             <h3 className="text-xl font-semibold text-white mb-4">Request a Reservation</h3>
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
-              <div className="md:col-span-2">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-white text-sm font-medium mb-2">Tool ID</label>
                 <input
                   type="number"
-                  placeholder="Tool ID"
+                  placeholder="Enter Tool ID"
                   value={form.tool_id}
                   onChange={(e) => setForm({ ...form, tool_id: e.target.value })}
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
+                  required
                 />
               </div>
-              <input
-                type="date"
-                value={form.start_date}
-                onChange={(e) => setForm({ ...form, start_date: e.target.value })}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
-              />
-              <input
-                type="date"
-                value={form.end_date}
-                onChange={(e) => setForm({ ...form, end_date: e.target.value })}
-                className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
-              />
-              <div className="md:col-span-2">
-                <button type="submit" className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors w-full md:w-auto">Reserve Tool</button>
+              <div>
+                <label className="block text-white text-sm font-medium mb-2">Start Date</label>
+                <input
+                  type="date"
+                  value={form.start_date}
+                  onChange={(e) => setForm({ ...form, start_date: e.target.value })}
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
+                  required
+                />
               </div>
+              <div>
+                <label className="block text-white text-sm font-medium mb-2">End Date</label>
+                <input
+                  type="date"
+                  value={form.end_date}
+                  onChange={(e) => setForm({ ...form, end_date: e.target.value })}
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
+                  required
+                />
+              </div>
+              <button type="submit" className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors w-full whitespace-nowrap">
+                Reserve Tool
+              </button>
             </form>
           </div>
 
@@ -117,7 +127,7 @@ const Reservations = () => {
                         {['approved', 'active'].includes(r.status) && (
                           <button
                             onClick={() => handleReturn(r.id)}
-                            className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors text-sm"
+                            className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
                           >
                             {r.status === 'active' ? 'Return' : 'Cancel'}
                           </button>
