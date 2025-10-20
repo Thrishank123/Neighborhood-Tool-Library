@@ -152,6 +152,27 @@ export const getPendingReservations = async (req, res) => {
   }
 };
 
+// Admin: get reservations for tools created by the logged-in admin
+export const getAdminReservations = async (req, res) => {
+  try {
+    const admin_id = req.user.id;
+    const result = await pool.query(
+      `SELECT r.id, r.tool_id, t.name as tool_name, u.name as user_name, u.email as user_email,
+              r.start_date, r.end_date, r.status, r.created_at
+       FROM reservations r
+       JOIN tools t ON r.tool_id = t.id
+       JOIN users u ON r.user_id = u.id
+       WHERE t.admin_id = $1
+       ORDER BY r.created_at DESC`,
+      [admin_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("getAdminReservations", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // User: return a tool (close active reservation)
 // User: return or cancel a reservation
 export const returnReservation = async (req, res) => {

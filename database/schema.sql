@@ -14,7 +14,8 @@ CREATE TABLE tools (
   name VARCHAR(100) NOT NULL,
   description TEXT,
   category VARCHAR(50),
-  image_url TEXT
+  image_url TEXT,
+  admin_id INT REFERENCES users(id) ON DELETE CASCADE
 );
 
 

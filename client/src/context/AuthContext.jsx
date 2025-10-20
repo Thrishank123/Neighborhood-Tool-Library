@@ -12,16 +12,25 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       const storedUser = localStorage.getItem("user");
 
+      console.log("AuthContext: Checking auth status");
+      console.log("AuthContext: Token present:", !!token);
+      console.log("AuthContext: Stored user present:", !!storedUser);
+
       if (token && storedUser) {
         try {
-          // Verify the token by making a request to a protected endpoint
-          await api.get("/auth/verify");
+          console.log("AuthContext: Verifying token with API");
+          const response = await api.get("/auth/verify");
+          console.log("AuthContext: Token verification successful:", response.data);
           setUser(JSON.parse(storedUser));
         } catch (error) {
+          console.error("AuthContext: Token verification failed:", error.response?.data || error.message);
           // Token is invalid, clear localStorage
           localStorage.clear();
           setUser(null);
         }
+      } else {
+        console.log("AuthContext: No token or user in localStorage");
+        setUser(null);
       }
       setIsLoading(false);
     };

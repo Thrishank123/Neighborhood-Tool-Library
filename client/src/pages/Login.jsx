@@ -39,12 +39,16 @@ const Login = () => {
 
     setIsLoading(true);
     try {
+      console.log("Login: Attempting login with:", formData.email);
       const res = await api.post("/auth/login", formData);
+      console.log("Login: Login response:", res.data);
+      console.log("Login: Saving token and user to localStorage");
       login(res.data.user, res.data.token);
       addToast("Login successful!");
       setTimeout(() => navigate("/tools"), 1000);
     } catch (err) {
       const message = err.response?.data?.message || "Login failed";
+      console.error("Login: Login failed:", message);
       addToast(message, "error");
       setErrors({ general: message });
     } finally {

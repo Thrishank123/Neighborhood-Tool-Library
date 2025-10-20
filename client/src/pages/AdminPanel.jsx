@@ -16,6 +16,9 @@ const AdminPanel = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [toasts, setToasts] = useState([]);
   const [showPendingModal, setShowPendingModal] = useState(false);
+  const [showAddToolModal, setShowAddToolModal] = useState(false);
+  const [newTool, setNewTool] = useState({ name: "", description: "", category: "" });
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const addToast = (message, type = "success") => {
     const id = Date.now();
@@ -30,8 +33,8 @@ const AdminPanel = () => {
     try {
       const [t, r, res, pendingRes] = await Promise.all([
         api.get("/tools"),
-        api.get("/reports"),
-        api.get("/reservations"),
+        api.get("/reports/admin"),
+        api.get("/reservations/admin"),
         api.get("/reservations/pending")
       ]);
       setTools(t.data);
@@ -123,14 +126,14 @@ const AdminPanel = () => {
           </div>
 
           <div className="space-y-8">
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <h2 className="text-2xl md:text-3xl font-bold text-white">Tools Management</h2>
                 <div className="flex gap-2">
                   <button onClick={() => setShowPendingModal(true)} className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors w-full sm:w-auto">
                     Pending Reservations ({pendingReservations.length})
                   </button>
-                  <button onClick={() => addToast("Add tool functionality not implemented", "info")} className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full sm:w-auto">
+                  <button onClick={() => setShowAddToolModal(true)} className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full sm:w-auto">
                     Add New Tool
                   </button>
                 </div>
@@ -174,7 +177,7 @@ const AdminPanel = () => {
               )}
             </div>
 
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Reservations Management</h2>
               {reservations.length === 0 ? (
                 <p className="text-white/60 text-center py-8">No reservations found.</p>
@@ -212,7 +215,7 @@ const AdminPanel = () => {
               )}
             </div>
 
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Damage Reports</h2>
               {reports.length === 0 ? (
                 <p className="text-white/60 text-center py-8">No reports found.</p>
@@ -221,10 +224,11 @@ const AdminPanel = () => {
                   <table className="w-full text-white">
                     <thead>
                       <tr className="border-b border-white/20">
-                        <th className="text-left py-3 px-4">ID</th>
-                        <th className="text-left py-3 px-4">Tool</th>
-                        <th className="text-left py-3 px-4">Reporter</th>
-                        <th className="text-left py-3 px-4">Description</th>
+                        <th className="text-left py-3 px-4">Report ID</th>
+                        <th className="text-left py-3 px-4">Tool Name</th>
+                        <th className="text-left py-3 px-4">Reported By</th>
+                        <th className="text-left py-3 px-4">Damage Description</th>
+                        <th className="text-left py-3 px-4">Date</th>
                         <th className="text-left py-3 px-4">Status</th>
                         <th className="text-left py-3 px-4">Actions</th>
                       </tr>
@@ -238,6 +242,7 @@ const AdminPanel = () => {
                           <td className="py-3 px-4 max-w-xs truncate" title={r.description}>
                             {r.description}
                           </td>
+                          <td className="py-3 px-4">{new Date(r.created_at).toLocaleDateString()}</td>
                           <td className="py-3 px-4">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                               r.resolved
@@ -323,6 +328,86 @@ const AdminPanel = () => {
                     </table>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {showAddToolModal && (
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 max-w-md w-full mx-4">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-semibold text-white">Add New Tool</h3>
+                  <button
+                    onClick={() => setShowAddToolModal(false)}
+                    className="text-white/60 hover:text-white"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  try {
+                    const formData = new FormData();
+                    formData.append('name', newTool.name);
+                    formData.append('description', newTool.description);
+                    formData.append('category', newTool.category);
+                    if (selectedImage) formData.append('image', selectedImage);
+
+                    await api.post('/tools', formData, {
+                      headers: { 'Content-Type': 'multipart/form-data' }
+                    });
+                    addToast("Tool added successfully!");
+                    setShowAddToolModal(false);
+                    setNewTool({ name: "", description: "", category: "" });
+                    setSelectedImage(null);
+                    fetchAll();
+                  } catch (err) {
+                    addToast("Failed to add tool", "error");
+                  }
+                }}>
+                  <div className="space-y-4">
+                    <input
+                      type="text"
+                      placeholder="Tool Name"
+                      value={newTool.name}
+                      onChange={(e) => setNewTool({ ...newTool, name: e.target.value })}
+                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-primary"
+                      required
+                    />
+                    <textarea
+                      placeholder="Description"
+                      value={newTool.description}
+                      onChange={(e) => setNewTool({ ...newTool, description: e.target.value })}
+                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-primary h-24 resize-none"
+                      required
+                    />
+                    <select
+                      value={newTool.category}
+                      onChange={(e) => setNewTool({ ...newTool, category: e.target.value })}
+                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                      required
+                    >
+                      <option value="" className="bg-gray-800">Select Category</option>
+                      <option value="Power Tools" className="bg-gray-800">Power Tools</option>
+                      <option value="Hand Tools" className="bg-gray-800">Hand Tools</option>
+                      <option value="Gardening" className="bg-gray-800">Gardening</option>
+                      <option value="Cleaning" className="bg-gray-800">Cleaning</option>
+                      <option value="Other" className="bg-gray-800">Other</option>
+                    </select>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setSelectedImage(e.target.files[0])}
+                      className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white file:bg-primary file:text-white file:border-none file:rounded file:px-3 file:py-1 file:mr-3"
+                    />
+                    <button
+                      type="submit"
+                      className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors"
+                    >
+                      Add Tool
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           )}

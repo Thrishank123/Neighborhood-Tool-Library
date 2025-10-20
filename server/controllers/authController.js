@@ -50,3 +50,15 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const verifyToken = async (req, res) => {
+  try {
+    // The authenticate middleware already verifies the token and sets req.user
+    const user = await pool.query("SELECT id, name, email, role FROM users WHERE id=$1", [req.user.id]);
+    if (!user.rows.length) return res.status(404).json({ message: "User not found" });
+    res.json({ user: user.rows[0] });
+  } catch (err) {
+    console.error("verifyToken error", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

@@ -38,13 +38,14 @@ export const getAllTools = async (req, res) => {
 export const addTool = async (req, res) => {
   try {
     const { name, description, category } = req.body;
+    const admin_id = req.user.id;
     let image_url = null;
     if (req.file) {
       image_url = `/uploads/${req.file.filename}`;
     }
     const result = await pool.query(
-      "INSERT INTO tools (name, description, category, image_url) VALUES ($1,$2,$3,$4) RETURNING id, name, description, category, image_url",
-      [name, description, category, image_url]
+      "INSERT INTO tools (name, description, category, image_url, admin_id) VALUES ($1,$2,$3,$4,$5) RETURNING id, name, description, category, image_url",
+      [name, description, category, image_url, admin_id]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

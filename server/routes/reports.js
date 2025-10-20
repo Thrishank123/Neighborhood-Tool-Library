@@ -2,7 +2,7 @@
 import express from "express";
 import multer from "multer";
 import { authenticate, authorizeAdmin } from "../middleware/auth.js";
-import { submitReport, getAllReports, resolveReport } from "../controllers/reportController.js";
+import { submitReport, getAllReports, getAdminReports, resolveReport } from "../controllers/reportController.js";
 
 const router = express.Router();
 
@@ -17,6 +17,8 @@ const upload = multer({ storage });
 
 router.post("/", authenticate, upload.single("image"), submitReport);
 router.get("/", authenticate, authorizeAdmin, getAllReports);
+router.get("/admin", authenticate, authorizeAdmin, getAdminReports);
 router.patch("/:id/resolve", authenticate, authorizeAdmin, resolveReport);
 
 export default router;
+  

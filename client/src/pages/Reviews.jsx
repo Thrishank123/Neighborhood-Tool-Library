@@ -100,7 +100,7 @@ const Reviews = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
-              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+              <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-6">Write a Review</h2>
                 <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                   <div>
@@ -188,7 +188,7 @@ const Reviews = () => {
             </div>
 
             <div>
-              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+              <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-6">
                   {toolId ? `Reviews for Tool #${toolId}` : "Select a tool to view reviews"}
                 </h2>

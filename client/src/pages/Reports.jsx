@@ -98,7 +98,7 @@ const Reports = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
-              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+              <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-6">Report Damage</h2>
                 <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                   <div>
@@ -163,7 +163,7 @@ const Reports = () => {
             </div>
 
             <div className="lg:col-span-2">
-              <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+              <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-6">Report History</h2>
                 {reports.length === 0 ? (
                   <p className="text-white/60 text-center py-8">No reports found.</p>

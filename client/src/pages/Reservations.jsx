@@ -61,7 +61,7 @@ const Reservations = () => {
       <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">My Reservations</h2>
-          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 mb-8">
+          <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6 mb-8">
             <h3 className="text-xl font-semibold text-white mb-4">Request a Reservation</h3>
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
               <div className="md:col-span-2">
@@ -91,7 +91,7 @@ const Reservations = () => {
             </form>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+          <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
             <h3 className="text-xl font-semibold text-white mb-4">Your Reservations</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-white">
@@ -114,12 +114,12 @@ const Reservations = () => {
                       <td className="py-3 px-4">{new Date(r.end_date).toLocaleDateString()}</td>
                       <td className="py-3 px-4">{r.status}</td>
                       <td className="py-3 px-4">
-                        {r.status === 'active' && (
+                        {['approved', 'active'].includes(r.status) && (
                           <button
                             onClick={() => handleReturn(r.id)}
                             className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors text-sm"
                           >
-                            Return
+                            {r.status === 'active' ? 'Return' : 'Cancel'}
                           </button>
                         )}
                       </td>

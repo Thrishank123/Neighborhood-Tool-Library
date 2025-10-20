@@ -26,7 +26,7 @@ export const submitReport = async (req, res) => {
 export const getAllReports = async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT dr.id, dr.tool_id, t.name as tool_name, dr.user_id, u.name as reporter, dr.description, dr.image_url, dr.resolved
+      `SELECT dr.id, dr.tool_id, t.name as tool_name, dr.user_id, u.name as reporter, dr.description, dr.image_url, dr.resolved, dr.created_at
        FROM damage_reports dr
        JOIN tools t ON dr.tool_id = t.id
        JOIN users u ON dr.user_id = u.id
@@ -35,6 +35,26 @@ export const getAllReports = async (req, res) => {
     res.json(result.rows);
   } catch (err) {
     console.error("getAllReports", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Admin: get damage reports for tools created by the logged-in admin
+export const getAdminReports = async (req, res) => {
+  try {
+    const admin_id = req.user.id;
+    const result = await pool.query(
+      `SELECT dr.id, dr.tool_id, t.name as tool_name, dr.user_id, u.name as reporter, dr.description, dr.image_url, dr.resolved, dr.created_at
+       FROM damage_reports dr
+       JOIN tools t ON dr.tool_id = t.id
+       JOIN users u ON dr.user_id = u.id
+       WHERE t.admin_id = $1
+       ORDER BY dr.created_at DESC`,
+      [admin_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("getAdminReports", err);
     res.status(500).json({ message: "Server error" });
   }
 };
