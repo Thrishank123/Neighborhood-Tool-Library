@@ -3,7 +3,7 @@ import Card from "./Card";
 
 const ToolCard = ({ tool, onReserve }) => {
   const img = tool.image_url
-    ? `http://localhost:5000${tool.image_url}`
+    ? `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000'}${tool.image_url}`
     : "https://via.placeholder.com/300x200?text=No+Image";
 
   // Status now comes from the API response
