@@ -5,6 +5,7 @@
     "tailwindcss": "^4.1.14"
   },
   "dependencies": {
+    "multer-storage-cloudinary": "^4.0.0",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.3"
   }

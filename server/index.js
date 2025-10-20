@@ -53,6 +53,18 @@ app.use("/api/reviews", reviewRoutes);
 // Basic health check
 app.get("/", (req, res) => res.send({ status: "ok", env: process.env.NODE_ENV || "dev" }));
 
+// --- GLOBAL ERROR HANDLING MIDDLEWARE ---
+// This should be the last middleware, before app.listen
+app.use((err, req, res, next) => {
+  console.error(`[${req.method}] ${req.path} - Global Error:`, err);
+  // Also check for specific CORS errors from our config
+  if (err.message === 'Not allowed by CORS') {
+    return res.status(403).json({ message: err.message });
+  }
+  res.status(500).json({ message: 'An unexpected server error occurred.' });
+});
+// --- END OF GLOBAL ERROR HANDLER ---
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
@@ -63,5 +75,4 @@ app.listen(PORT, async () => {
     console.error("❌ DB connection failed on startup:", err);
   }
 });
-
 
