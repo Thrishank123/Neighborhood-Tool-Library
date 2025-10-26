@@ -15,9 +15,11 @@ A full-stack web application for managing a community tool-sharing library. Memb
 - **Tool Management**: Browse, add, and manage community tools with images
 - **Reservations**: Request tool reservations with admin approval workflow
 - **Admin Panel**: Comprehensive dashboard for managing tools, reservations, and reports
+- **Ownership Security**: Strict ownership checks ensure admins can only manage their own tools and reservations
 - **Damage Reports**: Users can report tool damage with optional images
 - **Reviews**: Community feedback system for tools
 - **Responsive Design**: Mobile-first UI built with React and Tailwind CSS
+- **Image Management**: Cloudinary integration for secure image storage and deletion
 
 ### Technology Stack
 
@@ -25,6 +27,18 @@ A full-stack web application for managing a community tool-sharing library. Memb
 - **Backend**: Node.js, Express.js, PostgreSQL, JWT Authentication
 - **Deployment**: Vercel (frontend), Render (backend), Docker containers
 - **Image Storage**: Cloudinary integration
+
+## 🎥 Video Demo
+
+[Watch the complete application demonstration on Google Drive](https://drive.google.com/file/d/1R-E9rxv5AsxsaW-Jz0o2GnhvhxsS1JK0/view?usp=sharing)
+
+The video demo covers:
+- Full application walkthrough
+- User registration and authentication
+- Tool browsing and reservation system
+- Admin panel and management features
+- Security implementations
+- Technical architecture overview
 
 ## 🖼️ Visual Showcase
 
@@ -93,6 +107,19 @@ A full-stack web application for managing a community tool-sharing library. Memb
    npm install
    npm run dev
    ```
+
+## 🔒 Security Features
+
+### Ownership-Based Authorization
+- **Tool Deletion**: Only the admin who created a tool can delete it
+- **Reservation Management**: Only tool owners can approve/reject reservations for their tools
+- **Self-Reservation Prevention**: Admins cannot reserve their own tools
+- **Secure Logging**: Comprehensive debug logging for authorization checks
+
+### Image Management Security
+- **Cloudinary Integration**: Secure image storage with automatic cleanup
+- **Access Control**: Images are properly managed during tool deletion
+- **Fallback Support**: Local file system support for development
 
 ## 📚 API Documentation
 
