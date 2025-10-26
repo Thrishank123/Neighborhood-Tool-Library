@@ -67,84 +67,84 @@ const Reservations = () => {
   }, [location.search]);
 
   return (
-    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
-      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+    <div className="pt-24">
+      <div className="mx-4 lg:mx-8 xl:mx-16">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
-          <h2 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-8">My Reservations</h2>
-          <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6 mb-8">
-            <h3 className="text-xl font-semibold text-white mb-4">Request a Reservation</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-6">My Reservations</h2>
+          <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-4 mb-4">
+            <h3 className="text-lg font-semibold text-white mb-3">Request a Reservation</h3>
+            <form onSubmit={handleSubmit} className="space-y-2">
               <div>
-                <label className="block text-white text-sm font-medium mb-2">Tool ID</label>
+                <label className="block text-white text-xs font-medium mb-1">Tool ID</label>
                 <input
                   type="number"
                   placeholder="Enter Tool ID"
                   value={form.tool_id}
                   onChange={(e) => setForm({ ...form, tool_id: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 text-white placeholder-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
                   required
                 />
               </div>
               <div>
-                <label className="block text-white text-sm font-medium mb-2">Start Date</label>
+                <label className="block text-white text-xs font-medium mb-1">Start Date</label>
                 <input
                   type="date"
                   value={form.start_date}
                   onChange={(e) => setForm({ ...form, start_date: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
                   required
                 />
               </div>
               <div>
-                <label className="block text-white text-sm font-medium mb-2">End Date</label>
+                <label className="block text-white text-xs font-medium mb-1">End Date</label>
                 <input
                   type="date"
                   value={form.end_date}
                   onChange={(e) => setForm({ ...form, end_date: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/20"
                   required
                 />
               </div>
-              <button type="submit" className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors w-full whitespace-nowrap">
+              <button type="submit" className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full whitespace-nowrap">
                 Reserve Tool
               </button>
             </form>
           </div>
 
-          <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
-            <h3 className="text-xl font-semibold text-white mb-4">Your Reservations</h3>
+          <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-4">
+            <h3 className="text-lg font-semibold text-white mb-3">Your Reservations</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-white">
                 <thead>
                   <tr className="border-b border-white/20">
-                    <th className="text-left py-3 px-4">ID</th>
-                    <th className="text-left py-3 px-4">Tool</th>
-                    <th className="text-left py-3 px-4">Start</th>
-                    <th className="text-left py-3 px-4">End</th>
-                    <th className="text-left py-3 px-4">Status</th>
-                    <th className="text-left py-3 px-4">Actions</th>
+                    <th className="text-left py-2 px-3 text-xs">ID</th>
+                    <th className="text-left py-2 px-3 text-xs">Tool</th>
+                    <th className="text-left py-2 px-3 text-xs">Start</th>
+                    <th className="text-left py-2 px-3 text-xs">End</th>
+                    <th className="text-left py-2 px-3 text-xs">Status</th>
+                    <th className="text-left py-2 px-3 text-xs">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {reservations.map((r) => (
                     <tr key={r.id} className="border-b border-white/10">
-                      <td className="py-3 px-4">{r.id}</td>
-                      <td className="py-3 px-4">{r.tool_name}</td>
-                      <td className="py-3 px-4">{new Date(r.start_date).toLocaleDateString()}</td>
-                      <td className="py-3 px-4">{new Date(r.end_date).toLocaleDateString()}</td>
-                      <td className="py-3 px-4">{r.status}</td>
-                      <td className="py-3 px-4">
+                      <td className="py-2 px-3 text-xs">{r.id}</td>
+                      <td className="py-2 px-3 text-xs">{r.tool_name}</td>
+                      <td className="py-2 px-3 text-xs">{new Date(r.start_date).toLocaleDateString()}</td>
+                      <td className="py-2 px-3 text-xs">{new Date(r.end_date).toLocaleDateString()}</td>
+                      <td className="py-2 px-3 text-xs">{r.status}</td>
+                      <td className="py-2 px-3">
                         {(r.status === 'active' || r.status === 'approved') && (
-                          <div className="flex flex-col sm:flex-row gap-2">
+                          <div className="flex flex-col sm:flex-row gap-1">
                             <button
                               onClick={() => handleReturn(r.id)}
-                              className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
+                              className="bg-white/20 text-white px-3 py-1 rounded-lg hover:bg-white/30 transition-colors text-xs w-full sm:w-auto whitespace-nowrap"
                             >
                               Return
                             </button>
                             <button
                               onClick={() => handleCancel(r.id)}
-                              className="bg-red-500/20 text-red-200 px-4 py-2 rounded-lg hover:bg-red-500/30 transition-colors text-sm w-full sm:w-auto whitespace-nowrap"
+                              className="bg-red-500/20 text-red-200 px-3 py-1 rounded-lg hover:bg-red-500/30 transition-colors text-xs w-full sm:w-auto whitespace-nowrap"
                             >
                               Cancel
                             </button>

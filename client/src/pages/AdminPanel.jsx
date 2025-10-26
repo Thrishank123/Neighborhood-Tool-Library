@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+  import { useState, useEffect } from "react";
 import api from "../api/axiosConfig";
 import Container from "../components/Container";
 import Card from "../components/Card";
@@ -101,9 +101,9 @@ const AdminPanel = () => {
   }, []);
 
   if (isLoading) {
-  return (
-    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-32">
-      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+    return (
+      <div className="pt-24">
+        <div className="mx-4 lg:mx-8 xl:mx-16">
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
             <div className="text-center">
               <Spinner size="lg" className="mx-auto mb-4" />
@@ -116,18 +116,18 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-32">
-      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+    <div className="pt-24">
+      <div className="mx-4 lg:mx-8 xl:mx-16">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
-          <div className="mb-8">
-            <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-2">Admin Panel</h1>
-            <p className="text-sm md:text-base lg:text-lg text-white/80">Manage tools, reservations, and damage reports</p>
+          <div className="mb-6">
+            <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2">Admin Panel</h1>
+            <p className="text-sm md:text-base text-white/80">Manage tools, reservations, and damage reports</p>
           </div>
 
-          <div className="space-y-8">
-            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-white">Tools Management</h2>
+          <div className="space-y-4">
+            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-4">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <h2 className="text-lg md:text-xl font-bold text-white">Tools Management</h2>
                 <div className="flex flex-row flex-wrap gap-2">
                   <button onClick={() => setShowPendingModal(true)} className="bg-white/20 text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors whitespace-nowrap">
                     Pending Reservations ({pendingReservations.length})
@@ -144,25 +144,25 @@ const AdminPanel = () => {
                   <table className="w-full text-white">
                     <thead>
                       <tr className="border-b border-white/20">
-                        <th className="text-left py-3 px-4">ID</th>
-                        <th className="text-left py-3 px-4">Name</th>
-                        <th className="text-left py-3 px-4">Category</th>
-                        <th className="text-left py-3 px-4">Actions</th>
+                        <th className="text-left py-2 px-3 text-xs">ID</th>
+                        <th className="text-left py-2 px-3 text-xs">Name</th>
+                        <th className="text-left py-2 px-3 text-xs">Category</th>
+                        <th className="text-left py-2 px-3 text-xs">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {tools.map((t) => (
                         <tr key={t.id} className="border-b border-white/10">
-                          <td className="py-3 px-4">{t.id}</td>
-                          <td className="py-3 px-4 font-medium">{t.name}</td>
-                          <td className="py-3 px-4">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-white">
+                          <td className="py-2 px-3 text-xs">{t.id}</td>
+                          <td className="py-2 px-3 text-xs font-medium">{t.name}</td>
+                          <td className="py-2 px-3">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-primary/20 text-white">
                                {t.category}
                             </span>
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="py-2 px-3">
                             <button
-                              className="bg-red-500/20 text-red-300 px-3 py-1 rounded-lg hover:bg-red-500/30 transition-colors text-sm"
+                              className="bg-red-500/20 text-red-300 px-2 py-1 rounded-lg hover:bg-red-500/30 transition-colors text-xs"
                               onClick={() => deleteTool(t.id)}
                             >
                               Delete
@@ -176,8 +176,8 @@ const AdminPanel = () => {
               )}
             </div>
 
-            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Reservations Management</h2>
+            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-4">
+              <h2 className="text-lg md:text-xl font-bold text-white mb-4">Reservations Management</h2>
               {reservations.length === 0 ? (
                 <p className="text-white/60 text-center py-8">No reservations found.</p>
               ) : (
@@ -185,24 +185,24 @@ const AdminPanel = () => {
                   <table className="w-full text-white">
                     <thead>
                       <tr className="border-b border-white/20">
-                        <th className="text-left py-3 px-4">ID</th>
-                        <th className="text-left py-3 px-4">Tool</th>
-                        <th className="text-left py-3 px-4">User</th>
-                        <th className="text-left py-3 px-4">Start Date</th>
-                        <th className="text-left py-3 px-4">End Date</th>
-                        <th className="text-left py-3 px-4">Status</th>
+                        <th className="text-left py-2 px-3 text-xs">ID</th>
+                        <th className="text-left py-2 px-3 text-xs">Tool</th>
+                        <th className="text-left py-2 px-3 text-xs">User</th>
+                        <th className="text-left py-2 px-3 text-xs">Start Date</th>
+                        <th className="text-left py-2 px-3 text-xs">End Date</th>
+                        <th className="text-left py-2 px-3 text-xs">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {reservations.map((r) => (
                         <tr key={r.id} className="border-b border-white/10">
-                          <td className="py-3 px-4">{r.id}</td>
-                          <td className="py-3 px-4 font-medium">{r.tool_name}</td>
-                          <td className="py-3 px-4">{r.user_name || "N/A"}</td>
-                          <td className="py-3 px-4">{new Date(r.start_date).toLocaleDateString()}</td>
-                          <td className="py-3 px-4">{new Date(r.end_date).toLocaleDateString()}</td>
-                          <td className="py-3 px-4">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(r.status)}`}>
+                          <td className="py-2 px-3 text-xs">{r.id}</td>
+                          <td className="py-2 px-3 text-xs font-medium">{r.tool_name}</td>
+                          <td className="py-2 px-3 text-xs">{r.user_name || "N/A"}</td>
+                          <td className="py-2 px-3 text-xs">{new Date(r.start_date).toLocaleDateString()}</td>
+                          <td className="py-2 px-3 text-xs">{new Date(r.end_date).toLocaleDateString()}</td>
+                          <td className="py-2 px-3">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${getStatusColor(r.status)}`}>
                               {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
                             </span>
                           </td>
@@ -214,8 +214,8 @@ const AdminPanel = () => {
               )}
             </div>
 
-            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Damage Reports</h2>
+            <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-4">
+              <h2 className="text-lg md:text-xl font-bold text-white mb-4">Damage Reports</h2>
               {reports.length === 0 ? (
                 <p className="text-white/60 text-center py-8">No reports found.</p>
               ) : (
@@ -223,27 +223,27 @@ const AdminPanel = () => {
                   <table className="w-full text-white">
                     <thead>
                       <tr className="border-b border-white/20">
-                        <th className="text-left py-3 px-4">Report ID</th>
-                        <th className="text-left py-3 px-4">Tool Name</th>
-                        <th className="text-left py-3 px-4">Reported By</th>
-                        <th className="text-left py-3 px-4">Damage Description</th>
-                        <th className="text-left py-3 px-4">Date</th>
-                        <th className="text-left py-3 px-4">Status</th>
-                        <th className="text-left py-3 px-4">Actions</th>
+                        <th className="text-left py-2 px-3 text-xs">Report ID</th>
+                        <th className="text-left py-2 px-3 text-xs">Tool Name</th>
+                        <th className="text-left py-2 px-3 text-xs">Reported By</th>
+                        <th className="text-left py-2 px-3 text-xs">Damage Description</th>
+                        <th className="text-left py-2 px-3 text-xs">Date</th>
+                        <th className="text-left py-2 px-3 text-xs">Status</th>
+                        <th className="text-left py-2 px-3 text-xs">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       {reports.map((r) => (
                         <tr key={r.id} className="border-b border-white/10">
-                          <td className="py-3 px-4">{r.id}</td>
-                          <td className="py-3 px-4 font-medium">{r.tool_name}</td>
-                          <td className="py-3 px-4">{r.reporter}</td>
-                          <td className="py-3 px-4 max-w-xs truncate" title={r.description}>
+                          <td className="py-2 px-3 text-xs">{r.id}</td>
+                          <td className="py-2 px-3 text-xs font-medium">{r.tool_name}</td>
+                          <td className="py-2 px-3 text-xs">{r.reporter}</td>
+                          <td className="py-2 px-3 text-xs max-w-xs truncate" title={r.description}>
                             {r.description}
                           </td>
-                          <td className="py-3 px-4">{new Date(r.created_at).toLocaleDateString()}</td>
-                          <td className="py-3 px-4">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          <td className="py-2 px-3 text-xs">{new Date(r.created_at).toLocaleDateString()}</td>
+                          <td className="py-2 px-3">
+                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${
                               r.resolved
                                 ? "text-green-300 bg-green-900/50"
                                 : "text-yellow-300 bg-yellow-900/50"
@@ -251,10 +251,10 @@ const AdminPanel = () => {
                               {r.resolved ? "Resolved" : "Pending"}
                             </span>
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="py-2 px-3">
                             {!r.resolved && (
                               <button
-                                className="bg-primary text-white px-3 py-1 rounded-lg hover:bg-primary/90 transition-colors text-sm"
+                                className="bg-primary text-white px-2 py-1 rounded-lg hover:bg-primary/90 transition-colors text-xs"
                                 onClick={() => resolveReport(r.id)}
                               >
                                 Resolve

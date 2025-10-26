@@ -80,8 +80,8 @@ const Tools = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
-        <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+      <div className="pt-24">
+        <div className="mx-4 lg:mx-8 xl:mx-16">
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
             <div className="text-center">
               <Spinner size="lg" className="mx-auto mb-4" />
@@ -94,18 +94,18 @@ const Tools = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
-      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+    <div className="pt-24">
+      <div className="mx-4 lg:mx-8 xl:mx-16">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
           {/* Hero Section */}
           <div className="mb-12">
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               {/* Title Section */}
               <div className="flex-1">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
+                <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2">
                   Available Tools
                 </h1>
-                <p className="text-sm md:text-base lg:text-lg text-white/80 max-w-2xl">
+                <p className="text-xs md:text-sm text-white/80 max-w-2xl">
                   Browse, reserve, and manage all available equipment in the inventory.
                 </p>
               </div>
@@ -114,13 +114,13 @@ const Tools = () => {
               <div className="flex flex-col sm:flex-row gap-4 lg:min-w-0 lg:flex-shrink-0">
                 {/* Search Bar */}
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 h-5 w-5" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 h-4 w-4" />
                   <input
                     type="text"
                     placeholder="Search tools..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-4 py-3 bg-white/25 border border-white/30 text-white placeholder-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30 w-full sm:w-64"
+                    className="pl-10 pr-4 py-1.5 bg-white/25 border border-white/30 text-white placeholder-white/60 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30 w-full sm:w-64 text-sm"
                   />
                 </div>
 
@@ -128,7 +128,7 @@ const Tools = () => {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-4 py-3 bg-white/25 border border-white/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30"
+                  className="px-3 py-1.5 bg-white/25 border border-white/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30 text-sm"
                 >
                   <option value="" className="bg-neutral-800">Filter by Category</option>
                   {categories.map((category) => (
@@ -140,7 +140,7 @@ const Tools = () => {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-3 bg-white/25 border border-white/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30"
+                  className="px-3 py-1.5 bg-white/25 border border-white/30 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30 text-sm"
                 >
                   <option value="" className="bg-neutral-800">Sort by...</option>
                   <option value="name" className="bg-neutral-800">Name</option>
@@ -167,7 +167,7 @@ const Tools = () => {
               <p className="text-white/60 mt-2">Check back later for new additions to the library.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {filteredTools.map((tool) => (
                 <ToolCard
                   key={tool.id}

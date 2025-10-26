@@ -90,15 +90,15 @@ const Reviews = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
-      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+    <div className="pt-24">
+      <div className="mx-4 lg:mx-8 xl:mx-16">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
-          <div className="mb-8">
+          <div className="mb-6">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">Reviews</h1>
             <p className="text-sm md:text-base lg:text-lg text-white/80">Read and write reviews for tools</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-6">Write a Review</h2>

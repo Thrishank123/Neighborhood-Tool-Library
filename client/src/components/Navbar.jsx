@@ -50,14 +50,14 @@ const Navbar = () => {
   const isActiveLink = (path) => location.pathname === path;
 
   return (
-    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-full shadow-2xl z-50 px-6 py-3" role="navigation" aria-label="Main navigation">
+    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-full shadow-2xl z-50 px-4 py-2" role="navigation" aria-label="Main navigation">
       <div className="flex items-center justify-between space-x-8">
         {/* Left Side - Logo */}
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 bg-primary rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-xs">⭐</span>
           </div>
-          <span className="text-lg font-bold text-white">Tool Library</span>
+          <span className="text-base font-bold text-white">Tool Library</span>
         </div>
 
         {/* Mobile menu button */}
@@ -92,7 +92,7 @@ const Navbar = () => {
               {user.role === "admin" && (
                 <button
                   onClick={() => navigate("/admin")}
-                  className="bg-white text-primary px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary flex items-center space-x-2 shadow-lg whitespace-nowrap"
+                  className="bg-white text-primary px-4 py-2 rounded-full font-bold hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary flex items-center space-x-2 shadow-lg whitespace-nowrap"
                   aria-label="Admin"
                 >
                   <Plus size={16} />

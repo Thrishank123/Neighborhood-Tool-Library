@@ -1,31 +1,34 @@
-# UI Improvements Task
+# Refactor Tailwind CSS Classes for Smaller UI
 
-## Improve Typographic Hierarchy
-- [ ] Update NavBar.jsx: Apply bold font weight to desktop navigation links
-- [ ] Update card headers (h2/h3) across all pages: Increase font size, apply bold weight, make responsive
-  - [ ] AdminPanel.jsx: h2 and h3 elements
-  - [ ] Login.jsx: h2 elements
-  - [ ] Register.jsx: h2 elements
-  - [ ] Reports.jsx: h2 elements
-  - [ ] Reservations.jsx: h2 and h3 elements
-  - [ ] Reviews.jsx: h2 elements
-  - [ ] ToolCard.jsx: h3 elements
-  - [ ] Modal.jsx: h3 elements
+## Overview
+Systematically reduce Tailwind CSS classes across the frontend to make the interface less oversized and more balanced, especially on larger screens, while maintaining readability and responsiveness.
 
-## Overhaul Mobile Navigation Menu
-- [ ] Update NavBar.jsx: Replace glassmorphism with opaque white background, use black text for links, fix logout button visibility
+## Key Changes
+- **Typography**: Reduce heading sizes (text-4xl → text-3xl, text-3xl → text-2xl, etc.)
+- **Spacing**: Reduce padding (p-8 → p-6, p-12 → p-8), margins (mb-12 → mb-8, my-8 → my-6), gaps (gap-8 → gap-6)
+- **Components**: Reduce button padding (py-3 px-6 → py-2 px-4), input padding (py-3 → py-2)
+- **Navbar**: Reduce height and padding
+- **Consistency**: Apply changes uniformly across all pages
 
-## Redesign "Add New Tool" Button
-- [ ] Update NavBar.jsx: Style as filled, pill-shaped button with contrasting solid background
+## Files to Edit
+- [ ] client/src/components/Navbar.jsx - Reduce navbar height, padding, font sizes
+- [ ] client/src/components/ToolCard.jsx - Reduce heading size, spacing
+- [ ] client/src/pages/Tools.jsx - Reduce headings, container padding, grid gaps
+- [ ] client/src/pages/AdminPanel.jsx - Reduce headings, table padding, modal sizes
+- [ ] client/src/pages/Reservations.jsx - Reduce headings, form padding, table padding
+- [ ] client/src/pages/Login.jsx - Reduce headings, icon sizes, form spacing
+- [ ] client/src/pages/Register.jsx - Reduce headings, icon sizes, form spacing
+- [ ] client/src/components/Button.jsx - Reduce default padding
+- [ ] client/src/components/FormInput.jsx - Reduce input padding
+- [ ] client/src/components/Card.jsx - Reduce default padding
+- [ ] client/src/index.css - Update base component styles
 
-## Testing
-- [ ] Test responsiveness on different screen sizes
-- [ ] Verify text visibility and contrast
-- [ ] Check mobile menu functionality and logout button accessibility
+## Responsiveness Check
+- [ ] Test on mobile, tablet, desktop
+- [ ] Adjust responsive prefixes (md:, lg:) as needed
+- [ ] Ensure no overlapping text or awkward wrapping
 
-# TODO: Implement Tool Return Functionality
-
-- [x] Add returnReservation function in server/controllers/reservationController.js to allow users to close their active reservations
-- [x] Add PATCH /:id/return route in server/routes/reservations.js for authenticated users
-- [x] Update client/src/pages/Reservations.jsx to show Return button for active reservations and handle return API call
-- [ ] Test the return functionality to ensure reservation status changes to 'closed' and tool becomes available
+## Validation
+- [ ] All changes applied consistently
+- [ ] Readability maintained
+- [ ] Responsiveness intact

@@ -74,8 +74,8 @@ const Reports = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
-        <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+      <div className="pt-24">
+        <div className="mx-4 lg:mx-8 xl:mx-16">
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
             <div className="text-center">
               <Spinner size="lg" className="mx-auto mb-4" />
@@ -88,15 +88,15 @@ const Reports = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')] bg-cover bg-center bg-no-repeat pt-24">
-      <div className="mx-4 lg:mx-8 xl:mx-16 mt-8">
+    <div className="pt-24">
+      <div className="mx-4 lg:mx-8 xl:mx-16">
         <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl p-8 lg:p-12">
-          <div className="mb-8">
+          <div className="mb-6">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">Reports</h1>
             <p className="text-sm md:text-base lg:text-lg text-white/80">Report damaged tools and view report history</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
               <div className="bg-black/50 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
                 <h2 className="text-xl font-semibold text-white mb-6">Report Damage</h2>
@@ -172,24 +172,24 @@ const Reports = () => {
                     <table className="w-full text-white">
                       <thead>
                         <tr className="border-b border-white/20">
-                          <th className="text-left py-3 px-4">ID</th>
-                          <th className="text-left py-3 px-4">Tool</th>
-                          <th className="text-left py-3 px-4">Reporter</th>
-                          <th className="text-left py-3 px-4">Description</th>
-                          <th className="text-left py-3 px-4">Status</th>
+                          <th className="text-left py-2 px-3 text-xs">ID</th>
+                          <th className="text-left py-2 px-3 text-xs">Tool</th>
+                          <th className="text-left py-2 px-3 text-xs">Reporter</th>
+                          <th className="text-left py-2 px-3 text-xs">Description</th>
+                          <th className="text-left py-2 px-3 text-xs">Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {reports.map((r) => (
                           <tr key={r.id} className="border-b border-white/10">
-                            <td className="py-3 px-4">{r.id}</td>
-                            <td className="py-3 px-4 font-medium">{r.tool_name}</td>
-                            <td className="py-3 px-4">{r.reporter}</td>
-                            <td className="py-3 px-4 max-w-xs truncate" title={r.description}>
+                            <td className="py-2 px-3 text-xs">{r.id}</td>
+                            <td className="py-2 px-3 text-xs font-medium">{r.tool_name}</td>
+                            <td className="py-2 px-3 text-xs">{r.reporter}</td>
+                            <td className="py-2 px-3 text-xs max-w-xs truncate" title={r.description}>
                               {r.description}
                             </td>
-                            <td className="py-3 px-4">
-                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            <td className="py-2 px-3">
+                              <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium ${
                                 r.resolved
                                   ? "text-green-300 bg-green-900/50"
                                   : "text-yellow-300 bg-yellow-900/50"

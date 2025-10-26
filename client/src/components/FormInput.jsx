@@ -10,7 +10,7 @@ const FormInput = forwardRef(({ label, error, className = "", ...props }, ref) =
       )}
       <input
         ref={ref}
-        className={`input ${error ? "border-red-500 focus:ring-red-500 focus:border-red-500" : ""}`}
+        className={`input py-2 ${error ? "border-red-500 focus:ring-red-500 focus:border-red-500" : ""}`}
         {...props}
       />
       {error && (

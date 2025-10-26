@@ -24,8 +24,8 @@ const ToolCard = ({ tool, onReserve }) => {
   };
 
   return (
-    <Card className="rounded-xl overflow-hidden">
-      <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-neutral-100">
+    <Card className="rounded-xl overflow-hidden p-1">
+      <div className="aspect-square mb-1 overflow-hidden rounded-lg bg-neutral-100 p-0.5">
           <img
           src={img}
           alt={`Image of ${tool.name}`}
@@ -35,18 +35,18 @@ const ToolCard = ({ tool, onReserve }) => {
       </div>
 
       <div className="flex-1">
-        <h3 className="text-xl md:text-2xl font-bold text-black mb-2 line-clamp-2">
+        <h3 className="text-xs font-bold text-black mb-0.5 line-clamp-2">
           {tool.name}
         </h3>
 
         {/* Status Badge */}
-        <div className="mb-3">
-          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
+        <div className="mb-0.5">
+          <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium ${getStatusColor(status)}`}>
             {status}
           </span>
         </div>
 
-        <div className="space-y-1 mb-4">
+        <div className="space-y-0.5 mb-1">
           <p className="text-xs text-black">
             ID: {tool.id}
           </p>
@@ -56,10 +56,11 @@ const ToolCard = ({ tool, onReserve }) => {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-1">
         <Button
           onClick={onReserve}
           size="sm"
+          className="px-1 py-0.5 text-xs"
         >
           Reserve
         </Button>
@@ -70,3 +71,4 @@ const ToolCard = ({ tool, onReserve }) => {
 
 export default ToolCard;
 
+  
