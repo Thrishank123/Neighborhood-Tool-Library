@@ -2,10 +2,11 @@
 import { pool } from "../config/db.js";
 import path from "path";
 import fs from "fs";
+import { v2 as cloudinary } from 'cloudinary';
 
 export const getAllTools = async (req, res) => {
   try {
-    // Get tools with their current reservation status
+    // Get tools with their current reservation status and admin_id
     const query = `
       SELECT
         t.id,
@@ -13,6 +14,7 @@ export const getAllTools = async (req, res) => {
         t.description,
         t.category,
         t.image_url,
+        t.admin_id,
         CASE
           WHEN r.tool_id IS NOT NULL THEN 'In Use'
           ELSE 'Available'
@@ -57,23 +59,65 @@ export const createTool = async (req, res) => {
 
 export const deleteTool = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-    if (!id) return res.status(400).json({ message: "Invalid id" });
+    const toolId = Number(req.params.id);
+    const requestingAdminId = req.user.id;
 
-    // If tool has an image, attempt to remove file
-    const t = await pool.query("SELECT image_url FROM tools WHERE id=$1", [id]);
-    if (!t.rows.length) return res.status(404).json({ message: "Tool not found" });
+    console.log(`deleteTool: Targeting tool ID ${toolId} by admin ID ${requestingAdminId}`);
 
-    const image = t.rows[0].image_url;
-    if (image && image.startsWith("/uploads/")) {
-      const filePath = path.join(process.cwd(), "uploads", path.basename(image));
-      fs.unlink(filePath, (err) => { if (err) {/* no-op */} });
+    if (!toolId) return res.status(400).json({ message: "Invalid id" });
+
+    // Fetc h both image_url and admin_id for the target tool
+    const toolResult = await pool.query("SELECT image_url, admin_id FROM tools WHERE id=$1", [toolId]);
+    if (!toolResult.rows.length) return res.status(404).json({ message: "Tool not found" });
+
+    const toolOwnerId = toolResult.rows[0].admin_id;
+    console.log(`deleteTool: Tool owner ID is ${toolOwnerId}`);
+
+    // Compare the fetched toolOwnerId with the requestingAdminId
+    console.log(`deleteTool: Comparing: Requesting Admin (${requestingAdminId}) vs Tool Owner (${toolOwnerId})`);
+
+    if (toolOwnerId !== requestingAdminId) {
+      console.log("deleteTool: PERMISSION DENIED - Admin does not own this tool");
+      return res.status(403).json({ message: "You do not have permission to delete this tool." });
     }
 
-    await pool.query("DELETE FROM tools WHERE id=$1", [id]);
+    console.log("deleteTool: Ownership check passed. Proceeding with deletion.");
+
+    const image = toolResult.rows[0].image_url;
+
+    // Handle Cloudinary image deletion if it's a Cloudinary URL
+    if (image && image.includes('cloudinary.com')) {
+      console.log("deleteTool: Attempting to delete Cloudinary image");
+      try {
+        // Extract publicId from Cloudinary URL
+        // URL format: https://res.cloudinary.com/{cloud_name}/image/upload/v{version}/{folder}/{public_id}.{format}
+        const urlParts = image.split('/');
+        const publicIdWithFolder = urlParts.slice(-2).join('/').split('.')[0]; // e.g., "tool-library/xyz"
+        await cloudinary.uploader.destroy(publicIdWithFolder);
+        console.log("deleteTool: Cloudinary image deleted successfully");
+      } catch (cloudinaryError) {
+        console.error("deleteTool: Failed to delete Cloudinary image:", cloudinaryError);
+        // Continue with tool deletion even if image deletion fails
+      }
+    } else if (image && image.startsWith("/uploads/")) {
+      // Fallback for local uploads
+      const filePath = path.join(process.cwd(), "uploads", path.basename(image));
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error("deleteTool: Failed to delete local image file:", err);
+        } else {
+          console.log("deleteTool: Local image file deleted successfully");
+        }
+      });
+    }
+
+    console.log("deleteTool: Deleting tool from database");
+    await pool.query("DELETE FROM tools WHERE id=$1", [toolId]);
+    console.log("deleteTool: Tool deleted successfully from database");
+
     res.json({ message: "Tool deleted" });
   } catch (err) {
-    console.error("deleteTool", err);
+    console.error("deleteTool error during execution:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
