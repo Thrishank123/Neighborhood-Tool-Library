@@ -6,9 +6,11 @@ import ToolCard from "../components/ToolCard";
 import Container from "../components/Container";
 import Spinner from "../components/Spinner";
 import { ToastContainer } from "../components/Toast";
+import { useAuth } from "../context/AuthContext";
 
 const Tools = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [tools, setTools] = useState([]);
   const [filteredTools, setFilteredTools] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +46,25 @@ const Tools = () => {
     fetchTools();
   }, []);
 
+  // Refresh tools when URL has refresh=true parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('refresh') === 'true') {
+      const fetchTools = async () => {
+        try {
+          const res = await api.get("/tools");
+          setTools(res.data);
+          setFilteredTools(res.data);
+        } catch (err) {
+          console.error("Failed to refresh tools:", err);
+        }
+      };
+      fetchTools();
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
   useEffect(() => {
     let filtered = tools.filter((tool) => {
       const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -61,19 +82,8 @@ const Tools = () => {
     setFilteredTools(filtered);
   }, [tools, searchTerm, selectedCategory, sortBy]);
 
-  const handleReserve = async (toolId) => {
-    try {
-      await api.post("/reservations", {
-        tool_id: toolId,
-        start_date: new Date().toISOString().split('T')[0],
-        end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 7 days from now
-      });
-      addToast("Reservation request submitted successfully!");
-      navigate(`/reservations?tool_id=${toolId}`);
-    } catch (err) {
-      const message = err.response?.data?.message || "Failed to reserve tool";
-      addToast(message, "error");
-    }
+  const handleReserve = (toolId) => {
+    navigate(`/reservations?tool_id=${toolId}`);
   };
   
   const categories = [...new Set(tools.map(tool => tool.category))];
@@ -173,6 +183,7 @@ const Tools = () => {
                   key={tool.id}
                   tool={tool}
                   onReserve={() => handleReserve(tool.id)}
+                  user={user}
                 />
               ))}
             </div>

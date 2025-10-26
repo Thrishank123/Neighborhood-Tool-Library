@@ -1,34 +1,22 @@
-# Refactor Tailwind CSS Classes for Smaller UI
+# TODO: Implement Ownership Rules for Reservations and Admin Features
 
-## Overview
-Systematically reduce Tailwind CSS classes across the frontend to make the interface less oversized and more balanced, especially on larger screens, while maintaining readability and responsiveness.
+## Backend Changes
+- [x] Modify `getAllTools` in `server/controllers/toolController.js` to include `admin_id` in the SELECT query
+- [x] Update `createReservation` in `server/controllers/reservationController.js` to check if the requesting user is the tool's admin before allowing reservation
+- [x] Update `getPendingReservations` in `server/controllers/reservationController.js` to filter reservations to only show those for tools managed by the logged-in admin
 
-## Key Changes
-- **Typography**: Reduce heading sizes (text-4xl → text-3xl, text-3xl → text-2xl, etc.)
-- **Spacing**: Reduce padding (p-8 → p-6, p-12 → p-8), margins (mb-12 → mb-8, my-8 → my-6), gaps (gap-8 → gap-6)
-- **Components**: Reduce button padding (py-3 px-6 → py-2 px-4), input padding (py-3 → py-2)
-- **Navbar**: Reduce height and padding
-- **Consistency**: Apply changes uniformly across all pages
+## Frontend Changes
+- [x] Modify `ToolCard.jsx` to receive a `user` prop and disable the Reserve button if the user is an admin who owns the tool, with a visual indicator
+- [x] Update `Tools.jsx` to import `useAuth` and pass the user to each `ToolCard`
 
-## Files to Edit
-- [ ] client/src/components/Navbar.jsx - Reduce navbar height, padding, font sizes
-- [ ] client/src/components/ToolCard.jsx - Reduce heading size, spacing
-- [ ] client/src/pages/Tools.jsx - Reduce headings, container padding, grid gaps
-- [ ] client/src/pages/AdminPanel.jsx - Reduce headings, table padding, modal sizes
-- [ ] client/src/pages/Reservations.jsx - Reduce headings, form padding, table padding
-- [ ] client/src/pages/Login.jsx - Reduce headings, icon sizes, form spacing
-- [ ] client/src/pages/Register.jsx - Reduce headings, icon sizes, form spacing
-- [ ] client/src/components/Button.jsx - Reduce default padding
-- [ ] client/src/components/FormInput.jsx - Reduce input padding
-- [ ] client/src/components/Card.jsx - Reduce default padding
-- [ ] client/src/index.css - Update base component styles
+## Security Enhancements
+- [x] Restrict tool deletion to owner in `deleteTool` function
+- [x] Restrict reservation status updates to tool owner in `updateReservationStatus` function
 
-## Responsiveness Check
-- [ ] Test on mobile, tablet, desktop
-- [ ] Adjust responsive prefixes (md:, lg:) as needed
-- [ ] Ensure no overlapping text or awkward wrapping
-
-## Validation
-- [ ] All changes applied consistently
-- [ ] Readability maintained
-- [ ] Responsiveness intact
+## Testing
+- [ ] Test reservation creation as admin for own tools (should fail with 403 Forbidden)
+- [ ] Test reservation creation as admin for others' tools (should succeed)
+- [ ] Test pending reservations view for admins (should only show relevant requests)
+- [ ] Verify frontend disables Reserve button appropriately for admin-owned tools
+- [ ] Test tool deletion by non-owner admin (should fail with 403 Forbidden)
+- [ ] Test reservation approval/rejection by non-owner admin (should fail with 403 Forbidden)

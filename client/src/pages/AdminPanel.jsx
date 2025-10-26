@@ -39,6 +39,7 @@ const AdminPanel = () => {
       setTools(t.data);
       setReports(r.data);
       setReservations(res.data);
+      console.log("Pending reservations fetched:", pendingRes.data.length);
       setPendingReservations(pendingRes.data);
     } catch (err) {
       addToast("Failed to load admin data", "error");

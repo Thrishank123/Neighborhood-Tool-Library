@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "../api/axiosConfig";
 import { ToastContainer } from "../components/Toast";
 
@@ -7,6 +7,7 @@ const Reservations = () => {
   const location = useLocation();
   const [reservations, setReservations] = useState([]);
   const [form, setForm] = useState({ tool_id: "", start_date: "", end_date: "" });
+  const [selectedTool, setSelectedTool] = useState(null);
   const [toasts, setToasts] = useState([]);
 
   const addToast = (message, type = "success") => {
@@ -26,10 +27,14 @@ const Reservations = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/reservations", form);
+      const response = await api.post("/reservations", form);
+      console.log("Reservation successful:", response.data);
       addToast("Reservation requested successfully!");
       fetchReservations();
+      // Navigate back to tools page with refresh parameter to update UI
+      navigate('/?refresh=true');
     } catch (err) {
+      console.log("Reservation failed:", err.response?.data);
       addToast(err.response?.data?.message || "Reservation failed", "error");
     }
   };
@@ -63,6 +68,8 @@ const Reservations = () => {
     const toolId = params.get('tool_id');
     if (toolId) {
       setForm(prev => ({ ...prev, tool_id: toolId }));
+      // Optionally fetch and display tool details
+      // fetchToolDetails(toolId);
     }
   }, [location.search]);
 

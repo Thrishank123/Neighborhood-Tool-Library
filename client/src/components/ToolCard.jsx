@@ -1,7 +1,7 @@
 import Button from "./Button";
 import Card from "./Card";
 
-const ToolCard = ({ tool, onReserve }) => {
+const ToolCard = ({ tool, onReserve, user }) => {
   // --- THIS IS THE FIX ---
   // Use the image_url directly from the tool object if it exists.
   // It's already a complete URL from Cloudinary.
@@ -22,6 +22,10 @@ const ToolCard = ({ tool, onReserve }) => {
         return 'bg-neutral-100 text-neutral-800';
     }
   };
+
+  // Check if the user is an admin who owns this tool
+  const isOwnTool = user && user.role === 'admin' && tool.admin_id === user.id;
+  const canReserve = status === 'Available' && !isOwnTool;
 
   return (
     <Card className="rounded-xl overflow-hidden p-1">
@@ -61,8 +65,10 @@ const ToolCard = ({ tool, onReserve }) => {
           onClick={onReserve}
           size="sm"
           className="px-1 py-0.5 text-xs"
+          disabled={!canReserve}
+          title={isOwnTool ? "You cannot reserve your own tools" : ""}
         >
-          Reserve
+          {isOwnTool ? "Owned" : "Reserve"}
         </Button>
       </div>
     </Card>
