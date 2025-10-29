@@ -99,9 +99,7 @@ const AppContent = () => {
 const App = () => (
   <div className="min-h-screen w-screen absolute top-0 left-0 bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url('https://www.shareable.net/wp-content/uploads/2018/12/blog_top-image_tools.jpg')" }}>
     <AuthProvider>
-      <Router>
         <AppContent />
-      </Router>
     </AuthProvider>
   </div>
 );
